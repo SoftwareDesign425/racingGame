@@ -36,4 +36,8 @@ public class Stop{
     return name;
   }
   
+  public String toString()
+  {
+      return name + ": " + x + ", " + y;
+  }
 }

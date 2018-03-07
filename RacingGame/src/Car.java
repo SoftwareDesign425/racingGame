@@ -6,9 +6,16 @@
 
 public class Car{
   
+  private String name;
   private double topSpeed;
   private double time;
   private Stop[] path;
+  
+  public Car(String n)
+  {
+      name = n;
+      //randomize the other fields
+  }
   
   public Car(double newSpeed, Stop[] newPath){
     topSpeed = newSpeed;
@@ -37,10 +44,15 @@ public class Car{
   public double calcStop(Stop begin, Stop end){
     int distanceX = (begin.getX() - end.getX());
     int distanceY = (begin.getY() - end.getY());
-    double hypotenuse = Math.sqrt((distanceX^2)+(distanceY^2));
+    double hypotenuse = Math.sqrt((distanceX*distanceX)+(distanceY*distanceY));
     time = hypotenuse/topSpeed;
     return time;
   }
   
+  @Override
+  public String toString()
+  {
+      return name;
+  }
 }
   

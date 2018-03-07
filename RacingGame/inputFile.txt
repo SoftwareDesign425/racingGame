@@ -1,0 +1,11 @@
+/xstops:
+Place: 5, 10
+Name: Boston
+Place: 10, 20
+Name: Chicago
+Place: 15, 25
+Name: Barcelona
+
+/xcars:
+Name: McQueen
+Name: Sally
