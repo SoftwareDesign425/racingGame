@@ -8,8 +8,10 @@ import java.util.stream.Stream;
 
 
 /**
- *
- * @author
+ *Ana Gorohovschi
+ * Venue class loads data from file
+ * 
+ * 
  */
 public class Venue {
     private ArrayList<Car> cars = new ArrayList<Car>();
@@ -28,6 +30,7 @@ public class Venue {
             buffereReader = new BufferedReader(new FileReader(fileName));
 
             while ((line = buffereReader.readLine()) != null) {
+                
 
                 if (line.matches("/xstops:")) {
                     while (((line = buffereReader.readLine()) != null)
@@ -67,6 +70,7 @@ public class Venue {
             buffereReader.close(); //close file
         } catch (FileNotFoundException e) {
             System.out.println(e.getMessage());
+                    
         } catch (IOException e) {
             System.out.println(e.getMessage());
         } catch (ArrayIndexOutOfBoundsException e) {
@@ -74,7 +78,9 @@ public class Venue {
         } catch (NullPointerException e) {
             System.out.println(e.getMessage());
         }        
+        
     }
+   
     
     public void testLoading()
     {
