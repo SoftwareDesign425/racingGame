@@ -10,6 +10,21 @@ public class Car{
   private double topSpeed;
   private double time;
   private Stop[] path;
+  private int minX, maxX, minY, maxY;
+  
+  //Constructor that takes the min and max dimensions of each car
+  public Car(int minX, int maxX, int minY, int maxY){
+      this.minX = minX;
+      this.minY = minY;
+      this.maxX = maxX;
+      this.maxY = maxY;
+  }
+  //This will be the main method that will decide collsion
+  //(Whether or not the car is touching the other object)
+  public boolean isTouching(Car other){
+      return maxX >= other.minX && minX <= other.maxX 
+              && maxY >= other.minY && minY <= other.maxY;
+  }
   
   public Car(String n)
   {
@@ -55,4 +70,3 @@ public class Car{
       return name;
   }
 }
-  
