@@ -1,10 +1,10 @@
 import java.util.Timer;
 import java.util.TimerTask;
-import javafx.scene.Group;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;//Leaving color for next step:)
 /*
 Joseph Mitchell
 
@@ -13,10 +13,6 @@ This class handles animations like, tracks, cars, ect.
 This class has the following attributes:
 
 
-track(Image) - this is the image of the track(may later be collection)
-wid(int)- This is the width of the image
-heigh(int) - This is the height of the image
-    *wid and heigh are used to resize the scene
 t(Timer) - This creates a new timer that is daemon.
     (meaning the thread will terminate when program terminates)
 task(TimerTask) - This will schedule the task for the timer(keep score for race)
@@ -24,16 +20,19 @@ sec(int) - This is the actual timer counter.
     (counts the number of seconds the race is currently on)
 shutdown(volatile boolean) - This boolean will track whether or not the user terminates the program. 
     (So the Timer thread will terminate)
+
+
 Purpose:
 To split the gui so that the gui is not too long.
 */
-public class Animation extends Scene{
+public class Animation{
     
-    private Image track;
-    private int wid, heigh;
-    private Timer t = new Timer(true);
+    private GraphicsContext g;
+    private GameObject to, ti, car;
+    private final Timer t = new Timer(true);
     
-    private TimerTask task = new TimerTask() {    
+    private final TimerTask task = new TimerTask() {    
+        @Override
         public void run(){
             if(!shutdown){
                 sec++;
@@ -43,37 +42,69 @@ public class Animation extends Scene{
     };;
     private int sec = 0;
     private volatile boolean shutdown = false;
+    private boolean outerTrack, innerTrack;
     
     
-    public Animation(Parent root1) {
-        super(root1, 500, 500);
-        track = new Image("https://docs.telerik.com/devtools/winforms/telerik-presentation-framework/shapes/images/donut-shape001.png");
-        wid = 0;heigh = 0;//initialize width and height of game to 0.
-        ImageView iv = new ImageView();
-        iv.setImage(track);
-        iv.setSmooth(true);
-        setGameDim(iv);
+    public Animation() {
+        outerTrack = false;
+        innerTrack = false;
     }
     
-    public void setGameDim(ImageView i){
-        String info = "", width = "", height = "";
-        info += i.boundsInParentProperty();
-        width = info.substring(info.indexOf("width:"), info.indexOf(",",info.indexOf("width:")));
-        height = info.substring(info.indexOf("height:"), info.indexOf(",",info.indexOf("height:")));
+    public Parent createContent(){
+        GridPane root = new GridPane();
         
-        width = width.substring(width.indexOf(":")+1, width.indexOf(".", width.indexOf(":")));
-        height = height.substring(height.indexOf(":")+1, height.indexOf(".", height.indexOf(":")));
+        Canvas canvas = new Canvas(500,500);
+        g = canvas.getGraphicsContext2D();
         
-        wid = Integer.parseInt(width);
-        heigh = Integer.parseInt(height);
+        root.getChildren().add(canvas);
         
-        System.out.println("Width: " + wid + "\nHeight: " + heigh);
+        buildCars();
+        buildTrack();
         
-        ((Group)getRoot()).getChildren().add(i);
+        render();
+        
+        return root;
+    }
+    
+    public void render(){
+        g.clearRect(0,0,500,500);
+        
+        to.draw(g, Color.TRANSPARENT, true);
+        ti.draw(g, Color.BLUE, false);
+        car.draw(g, Color.GREEN, false);
+        
+        outerTrack = car.isTouching(to);
+        innerTrack = car.isTouching(ti);
+        
+        g.setStroke(Color.BLACK);
+        
+        g.strokeText(!outerTrack ? "Colliding (to)" : "Not Colliding (to)", 100, 50);
+        g.strokeText(innerTrack ? "Colliding (ti)" : "Not Colliding (ti)", 100, 100);
+    }
+    
+    public void buildTrack(){
+        to = new GameObject(30,30,440,440);
+        ti = new GameObject(100,100,300,300);
+    }
+    
+    public void buildCars(){
+        car = new GameObject(50,50,25,25);
+    }
+    
+    public GameObject getOuterTrack(){
+        return to;
+    }
+    
+    public GameObject getInnerTrack(){
+        return ti;
     }
     
     public void shutdown(){
         shutdown = true;
+    }
+     
+    public GameObject getCar(){
+        return car;
     }
     
     public Timer getTimer(){
@@ -82,13 +113,5 @@ public class Animation extends Scene{
     
     public TimerTask getTimerTask(){
         return task;
-    }
-    
-    public int getGameWidth(){
-        return wid;
-    }
-    
-    public int getGameHeight(){
-        return heigh;
     }
 }
