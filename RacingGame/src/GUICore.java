@@ -22,15 +22,19 @@ import javafx.scene.layout.GridPane;
 public class GUICore extends Application{
   
   private boolean isWin, isAin, isSin, isDin;
+  private Scene scene;
+  private Animation a;
   
   public GUICore(){
       isWin = false; isAin = false; //True if colliding, False if not colliding
       isSin = false; isDin = false;
   }  
-    
+  
+  
   public void start(Stage stage){
-    Animation a = new Animation();//Joe for Animation
-    a.getTimer().scheduleAtFixedRate(a.getTimerTask(), 1000, 1000);//Joe for 
+    a = new Animation();//Joe for Animation
+    a.setRate(25);
+    a.getTimer().scheduleAtFixedRate(a.getTimerTask(), 1000, 1000);//Joe for
     //Animation
 //******************* GridPane *******************//
     //GridPane gp = new GridPane();
@@ -43,38 +47,40 @@ public class GUICore extends Application{
     //gp.add(animation, 0,0);
     
 //******************* Display *******************//
-    Scene scene = new Scene(gp); 
-    scene.setOnKeyPressed(e -> {//Joe for Animation
+    scene = new Scene(gp); 
+    scene.setOnKeyPressed(e -> {//Joe for Animation(Have speed be based by time!)
+        for(int i = 0; i < a.getRate(); i++){
             if(e.getCode() == KeyCode.W){//Move forward
                 if(a.stopW()){
                     isWin = false;
-                    (a.getCar()).y -=5;
-                }else{
-                    isWin = true;
+                    (a.getCar()).y -=1;//value could make the car go outside the boundary!
+                }else{                 //have this be 1, and change the repaint time 
+                    isWin = true;      //be the speed factor:)
                 }
             }else if(e.getCode() == KeyCode.S){//Move backward
                 if(a.stopS()){
                     isSin = false;
-                    (a.getCar()).y +=5;
+                    (a.getCar()).y +=1;
                 }else{
                     isSin = true;
                 }
             }else if(e.getCode() == KeyCode.A){//Move left
                 if(a.stopA()){
                     isAin = false;
-                    (a.getCar()).x -= 5;
+                    (a.getCar()).x -=1;
                 }else{
                     isAin = true;
                 }
             }else if(e.getCode() == KeyCode.D){//Move right
                 if(a.stopD()){
                     isDin = false;
-                    (a.getCar()).x +=5;
+                    (a.getCar()).x +=1;
                 }else{
                     isDin = true;
                 }
             }
             a.render();
+        }
     });
     stage.setTitle("Project 3 - Racing Game");       
     stage.setScene(scene); 
@@ -83,6 +89,10 @@ public class GUICore extends Application{
     stage.show();
     
   }
+  
+//  public void keyCommands(Scene scene, Animation a){
+//      
+//  }
   
   public boolean inContactTop(Animation a){
       return (a.getCar()).isTouching(a.getTop());

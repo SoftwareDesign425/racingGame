@@ -30,7 +30,8 @@ public class Animation{
     private GraphicsContext g;
     private GameObject car, top, bottom, left, right,
                             topi, bottomi, lefti, righti;
-    private final Timer t = new Timer(true);
+    
+    private final Timer ti = new Timer(true);
     
     private final TimerTask task = new TimerTask() {    
         @Override
@@ -41,12 +42,13 @@ public class Animation{
             }
         }
     };;
-    private int sec = 0;
+    private int sec = 0, rate;
     private volatile boolean shutdown = false;
     private boolean to, b, l, r, toi, bi, li, ri;
     
     
     public Animation() {
+        rate = 1;
     }
     
     public Parent createContent(){
@@ -92,16 +94,6 @@ public class Animation{
         
         g.setStroke(Color.BLACK);
         
-        //Testing for collsion:)
-//        g.strokeText(to ? "Colliding (top)" : "Not Colliding (top)", 100, 100);
-//        g.strokeText(b ? "Colliding (bottom)" : "Not Colliding (bottom)", 100, 150);
-//        g.strokeText(l ? "Colliding (left)" : "Not Colliding (left)", 100, 200);
-//        g.strokeText(r ? "Colliding (right)" : "Not Colliding (right)", 100, 250);
-//        
-//        g.strokeText(toi ? "Colliding (toi)" : "Not Colliding (toi)", 100, 300);
-//        g.strokeText(bi ? "Colliding (toi)" : "Not Colliding (toi)", 100, 350);
-//        g.strokeText(li ? "Colliding (toi)" : "Not Colliding (toi)", 100, 400);
-//        g.strokeText(ri ? "Colliding (toi)" : "Not Colliding (toi)", 100, 450);
     }
     
     public void buildTrack(){
@@ -163,10 +155,18 @@ public class Animation{
     }
     
     public Timer getTimer(){
-        return t;
+        return ti;
     }
     
     public TimerTask getTimerTask(){
         return task;
+    }
+    
+    public void setRate(int a){
+        rate = a;
+    }
+    
+    public int getRate(){
+        return rate;
     }
 }
