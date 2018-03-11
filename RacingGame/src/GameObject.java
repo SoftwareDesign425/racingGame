@@ -59,7 +59,4 @@ public class GameObject {
     public boolean isTouching(GameObject other){
         return car().isTouching(other.car());
     }
-//    public boolean isTouchingOuterTrack(GameObject other){
-//        return car().isTouchingOuterTrack(other.car());
-//    }
 }

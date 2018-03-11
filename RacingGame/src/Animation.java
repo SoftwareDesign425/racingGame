@@ -28,7 +28,8 @@ To split the gui so that the gui is not too long.
 public class Animation{
     
     private GraphicsContext g;
-    private GameObject to, ti, car;
+    private GameObject car, top, bottom, left, right,
+                            topi, bottomi, lefti, righti;
     private final Timer t = new Timer(true);
     
     private final TimerTask task = new TimerTask() {    
@@ -42,12 +43,10 @@ public class Animation{
     };;
     private int sec = 0;
     private volatile boolean shutdown = false;
-    private boolean outerTrack, innerTrack;
+    private boolean to, b, l, r, toi, bi, li, ri;
     
     
     public Animation() {
-        outerTrack = false;
-        innerTrack = false;
     }
     
     public Parent createContent(){
@@ -69,34 +68,90 @@ public class Animation{
     public void render(){
         g.clearRect(0,0,500,500);
         
-        to.draw(g, Color.TRANSPARENT, true);
-        ti.draw(g, Color.BLUE, false);
+        top.draw(g, Color.BLACK, false);
+        bottom.draw(g, Color.BLACK, false);
+        left.draw(g, Color.BLACK, false);
+        right.draw(g, Color.BLACK, false);
+        
+        topi.draw(g, Color.BLACK, false);
+        bottomi.draw(g, Color.BLACK, false);
+        lefti.draw(g, Color.BLACK, false);
+        righti.draw(g, Color.BLACK, false);
+        
         car.draw(g, Color.GREEN, false);
         
-        outerTrack = car.isTouching(to);
-        innerTrack = car.isTouching(ti);
+        to = car.isTouching(top);
+        b = car.isTouching(bottom);
+        l = car.isTouching(left);
+        r = car.isTouching(right);
+        //Add inner rectangle boolean vals
+        toi = car.isTouching(topi);
+        bi = car.isTouching(bottomi);
+        li = car.isTouching(lefti);
+        ri = car.isTouching(righti);
         
         g.setStroke(Color.BLACK);
         
-        g.strokeText(!outerTrack ? "Colliding (to)" : "Not Colliding (to)", 100, 50);
-        g.strokeText(innerTrack ? "Colliding (ti)" : "Not Colliding (ti)", 100, 100);
+        //Testing for collsion:)
+//        g.strokeText(to ? "Colliding (top)" : "Not Colliding (top)", 100, 100);
+//        g.strokeText(b ? "Colliding (bottom)" : "Not Colliding (bottom)", 100, 150);
+//        g.strokeText(l ? "Colliding (left)" : "Not Colliding (left)", 100, 200);
+//        g.strokeText(r ? "Colliding (right)" : "Not Colliding (right)", 100, 250);
+//        
+//        g.strokeText(toi ? "Colliding (toi)" : "Not Colliding (toi)", 100, 300);
+//        g.strokeText(bi ? "Colliding (toi)" : "Not Colliding (toi)", 100, 350);
+//        g.strokeText(li ? "Colliding (toi)" : "Not Colliding (toi)", 100, 400);
+//        g.strokeText(ri ? "Colliding (toi)" : "Not Colliding (toi)", 100, 450);
     }
     
     public void buildTrack(){
-        to = new GameObject(30,30,440,440);
-        ti = new GameObject(100,100,300,300);
+        //Outer Rectangle
+        top = new GameObject(0,0,500,1);//Top boundary
+        bottom = new GameObject(0,499,499,1);//Bottom boundary
+        left = new GameObject(0,0,1,500);//Left boundary
+        right = new GameObject(499,1,1,499);//Right boundary
+        //Inner Rectangle
+        topi = new GameObject(100,100,300,1);
+        bottomi = new GameObject(100,400,300,1);
+        lefti = new GameObject(100,100,1,300);
+        righti = new GameObject(400,100,1,300);
     }
-    
-    public void buildCars(){
+    //Inner Rectangle dimensions 100,100,300,300
+    public void buildCars(){//new Cars will be initialized here:)
         car = new GameObject(50,50,25,25);
     }
     
-    public GameObject getOuterTrack(){
-        return to;
+    //Outer boundary accessors
+    public GameObject getTop(){
+        return top;
     }
     
-    public GameObject getInnerTrack(){
-        return ti;
+    public GameObject getBottom(){
+        return bottom;
+    }
+    
+    public GameObject getLeft(){
+        return left;
+    }
+    
+    public GameObject getRight(){
+        return right;
+    }
+    
+    public boolean stopW(){
+        return (!to && !bi);
+    }
+    
+    public boolean stopA(){
+        return (!l && !ri);
+    }
+    
+    public boolean stopS(){
+        return (!b && !toi);
+    }
+    
+    public boolean stopD(){
+        return (!r && !li);
     }
     
     public void shutdown(){

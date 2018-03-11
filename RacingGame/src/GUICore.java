@@ -11,8 +11,7 @@
  */
 
 // Default javaFX imports
-import javafx.application.Application; 
-import javafx.scene.Group; 
+import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
@@ -23,9 +22,9 @@ import javafx.scene.layout.GridPane;
 public class GUICore extends Application{
   
   private boolean isWin, isAin, isSin, isDin;
-
+  
   public GUICore(){
-      isWin = false; isAin = false; 
+      isWin = false; isAin = false; //True if colliding, False if not colliding
       isSin = false; isDin = false;
   }  
     
@@ -46,96 +45,33 @@ public class GUICore extends Application{
 //******************* Display *******************//
     Scene scene = new Scene(gp); 
     scene.setOnKeyPressed(e -> {//Joe for Animation
-            if(e.getCode() == KeyCode.W){
-                
-//                if(inContactOuter(a) && isA == false
-//                        && isD == false && isS == false){
-//                    isW = true;
-//                }else{
-//                    if(!inContactOuter(a)){
-//                        isW = false;
-//                    }
-//                    (a.getCar()).y -=5;
-//                }
-                
-                
-                if(inContactInner(a) && isAin == false 
-                        && isDin == false && isSin == false){
-                    isWin = true;
-                }else{
-                    if(!inContactInner(a)){
-                        isWin = false;
-                    }
+            if(e.getCode() == KeyCode.W){//Move forward
+                if(a.stopW()){
+                    isWin = false;
                     (a.getCar()).y -=5;
-                }
-            }else if(e.getCode() == KeyCode.S){
-                
-                
-//                if(inContactOuter(a) && isA == false
-//                        && isD == false && isW == false){
-//                    isS = true;
-//                }else{
-//                    if(!inContactOuter(a)){
-//                        isS = false;
-//                    }
-//                    (a.getCar()).y +=5;
-//                }
-                
-                
-                
-                if(inContactInner(a) && isAin == false
-                        && isDin == false && isWin == false){
-                    isSin = true;
                 }else{
-                    if(!inContactInner(a)){
-                        isSin = false;
-                    }
+                    isWin = true;
+                }
+            }else if(e.getCode() == KeyCode.S){//Move backward
+                if(a.stopS()){
+                    isSin = false;
                     (a.getCar()).y +=5;
-                }
-            }else if(e.getCode() == KeyCode.A){
-                
-                
-//                if(inContactOuter(a) && isW == false
-//                        && isS == false && isD == false){
-//                    isA = true;
-//                }else{
-//                    if(!inContactOuter(a)){
-//                        isA = false;
-//                    }
-//                    (a.getCar()).x -= 5;
-//                }
-                
-                
-                if(inContactInner(a) && isWin == false
-                        && isSin == false && isDin == false){
-                    isAin = true;
                 }else{
-                    if(!inContactInner(a)){
-                        isAin = false;
-                    }
+                    isSin = true;
+                }
+            }else if(e.getCode() == KeyCode.A){//Move left
+                if(a.stopA()){
+                    isAin = false;
                     (a.getCar()).x -= 5;
-                }
-            }else if(e.getCode() == KeyCode.D){
-                
-//                if(inContactOuter(a) && isW == false
-//                        && isS == false && isA == false){
-//                    isD = true;
-//                }else{
-//                    if(!inContactOuter(a)){
-//                        isD = false;
-//                    }
-//                    (a.getCar()).x +=5;
-//                }
-                
-                
-                if(inContactInner(a) && isWin == false
-                        && isSin == false && isAin == false){
-                    isDin = true;
                 }else{
-                    if(!inContactInner(a)){
-                        isDin = false;
-                    }
+                    isAin = true;
+                }
+            }else if(e.getCode() == KeyCode.D){//Move right
+                if(a.stopD()){
+                    isDin = false;
                     (a.getCar()).x +=5;
+                }else{
+                    isDin = true;
                 }
             }
             a.render();
@@ -148,14 +84,21 @@ public class GUICore extends Application{
     
   }
   
-  public boolean inContactOuter(Animation a){
-      return (!(a.getCar()).isTouching(a.getOuterTrack()));
+  public boolean inContactTop(Animation a){
+      return (a.getCar()).isTouching(a.getTop());
   }
   
-  public boolean inContactInner(Animation a){
-      return (a.getCar()).isTouching(a.getInnerTrack());
+  public boolean inContactBottom(Animation a){
+      return (a.getCar()).isTouching(a.getBottom());
   }
   
+  public boolean inContactLeft(Animation a){
+      return (a.getCar()).isTouching(a.getLeft());
+  }
+  
+  public boolean inContactRight(Animation a){
+      return (a.getCar()).isTouching(a.getRight());
+  }
   // Run program
   public static void main(String args[]){          
     launch(args);     

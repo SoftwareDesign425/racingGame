@@ -38,18 +38,18 @@ public class Car{
       //randomize the other fields
   }
   
-  public Car(double newSpeed, Stop[] newPath){
-    topSpeed = newSpeed;
-    time = 0.0;
-    path = newPath;
-  }
+//  public Car(double newSpeed, Stop[] newPath){
+//    topSpeed = newSpeed;
+//    time = 0.0;
+//    path = newPath;
+//  }
   
   public void setTime(double newTime){
     time = newTime;
   }
-  public void setPath(Stop[] newPath){
-    path = newPath;
-  }
+//  public void setPath(Stop[] newPath){
+//    path = newPath;
+//  }
   public void setSpeed(double newSpeed){
     topSpeed = newSpeed;
   }
@@ -61,16 +61,16 @@ public class Car{
   }
   
   
-  public Stop[] getPath(){
-    return path;
-  }
-  public double calcStop(Stop begin, Stop end){
-    int distanceX = (begin.getX() - end.getX());
-    int distanceY = (begin.getY() - end.getY());
-    double hypotenuse = Math.sqrt((distanceX*distanceX)+(distanceY*distanceY));
-    time = hypotenuse/topSpeed;
-    return time;
-  }
+//  public Stop[] getPath(){
+//    return path;
+//  }
+//  public double calcStop(Stop begin, Stop end){
+//    int distanceX = (begin.getX() - end.getX());
+//    int distanceY = (begin.getY() - end.getY());
+//    double hypotenuse = Math.sqrt((distanceX*distanceX)+(distanceY*distanceY));
+//    time = hypotenuse/topSpeed;
+//    return time;
+//  }
   
   @Override
   public String toString()
