@@ -1,10 +1,14 @@
 import java.util.Timer;
 import java.util.TimerTask;
+import javafx.animation.PathTransition;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;//Leaving color for next step:)
+import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 /*
 Joseph Mitchell
 
@@ -28,8 +32,11 @@ To split the gui so that the gui is not too long.
 public class Animation{
     
     private GraphicsContext g;
-    private GameObject car, top, bottom, left, right,
-                            topi, bottomi, lefti, righti;
+    private Pane root;
+    private GameObject car, car2,
+            top, bottom, left, right,
+            topi, bottomi, lefti, righti;
+    private Rectangle path1, carPath2;
     
     private final Timer ti = new Timer(true);
     
@@ -49,18 +56,24 @@ public class Animation{
     
     public Animation() {
         rate = 1;
+        path1 = new Rectangle();
+        carPath2 = new Rectangle();
     }
     
     public Parent createContent(){
-        GridPane root = new GridPane();
+        root = new Pane();
         
         Canvas canvas = new Canvas(500,500);
         g = canvas.getGraphicsContext2D();
         
         root.getChildren().add(canvas);
         
+        buildPaths();
         buildCars();
         buildTrack();
+        
+        root.getChildren().add(carPath2);
+        root.getChildren().add(path1);
         
         render();
         
@@ -80,7 +93,8 @@ public class Animation{
         lefti.draw(g, Color.BLACK, false);
         righti.draw(g, Color.BLACK, false);
         
-        car.draw(g, Color.GREEN, false);
+        car.draw(g, Color.GREEN, false);  
+        
         
         to = car.isTouching(top);
         b = car.isTouching(bottom);
@@ -93,6 +107,9 @@ public class Animation{
         ri = car.isTouching(righti);
         
         g.setStroke(Color.BLACK);
+        
+        car2.setX((int)carPath2.getX());
+        car2.setY((int)carPath2.getY());
         
     }
     
@@ -111,6 +128,22 @@ public class Animation{
     //Inner Rectangle dimensions 100,100,300,300
     public void buildCars(){//new Cars will be initialized here:)
         car = new GameObject(50,50,25,25);
+        car2 = new GameObject((int)carPath2.getX(), (int)carPath2.getY(), 
+                (int)carPath2.getWidth(), (int)carPath2.getHeight());
+    }
+    
+    public void buildPaths(){
+        carPath2 = new Rectangle(50,50,25,25);
+        carPath2.setFill(Color.BLUE);
+        path1 = new Rectangle(25,25,450,450);
+        path1.setFill(Color.TRANSPARENT);
+        PathTransition pl = new PathTransition();
+        pl.setNode(carPath2);
+        pl.setPath(path1);
+        pl.setDuration(Duration.seconds(2));
+        pl.setAutoReverse(false);
+        pl.setCycleCount(1);
+        pl.play();
     }
     
     //Outer boundary accessors

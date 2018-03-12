@@ -1,6 +1,7 @@
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 
 /*
 Joseph Mitchell
@@ -30,7 +31,7 @@ game objects position on the screen
 */
 
 
-public class GameObject {
+public class GameObject{
     
     public int x, y, w, h;
     
@@ -40,6 +41,14 @@ public class GameObject {
         this.y = y;
         this.w = w;
         this.h = h;
+    }
+    
+    public void setX(int x){
+        this.x = x;
+    }
+    
+    public void setY(int y){
+        this.y = y;
     }
     
     public void draw(GraphicsContext g, Color c, boolean s){
@@ -59,4 +68,6 @@ public class GameObject {
     public boolean isTouching(GameObject other){
         return car().isTouching(other.car());
     }
+    
+    
 }

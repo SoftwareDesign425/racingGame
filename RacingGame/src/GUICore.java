@@ -18,6 +18,7 @@ import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 // Layout management
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 
 public class GUICore extends Application{
   
@@ -39,7 +40,9 @@ public class GUICore extends Application{
 //******************* GridPane *******************//
     //GridPane gp = new GridPane();
     Button b = new Button("This is a button");//Testing purposes
-    GridPane gp = ((GridPane)a.createContent());//Joe for Animation
+    Pane gp = ((Pane)a.createContent());//Joe for Animation
+    b.setTranslateX(300);
+    b.setTranslateY(250);
     gp.getChildren().add(b);
     // Add buttons
     //gp.add(guiButtons, 0,0);
