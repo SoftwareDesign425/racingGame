@@ -17,7 +17,6 @@ import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 // Layout management
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 
 public class GUICore extends Application{
