@@ -4,7 +4,6 @@ import javafx.animation.PathTransition;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;//Leaving color for next step:)
 import javafx.scene.shape.Rectangle;
@@ -36,7 +35,7 @@ public class Animation{
     private GameObject car, car2,
             top, bottom, left, right,
             topi, bottomi, lefti, righti;
-    private Rectangle path1, carPath2;
+    private Rectangle path1, carPath1, path2, carPath2, path3, carPath3;
     
     private final Timer ti = new Timer(true);
     
@@ -57,7 +56,11 @@ public class Animation{
     public Animation() {
         rate = 1;
         path1 = new Rectangle();
+        path2 = new Rectangle();
+        path3 = new Rectangle();
+        carPath1 = new Rectangle();
         carPath2 = new Rectangle();
+        carPath3 = new Rectangle();
     }
     
     public Parent createContent(){
@@ -71,9 +74,6 @@ public class Animation{
         buildPaths();
         buildCars();
         buildTrack();
-        
-        root.getChildren().add(carPath2);
-        root.getChildren().add(path1);
         
         render();
         
@@ -95,7 +95,6 @@ public class Animation{
         
         car.draw(g, Color.GREEN, false);  
         
-        
         to = car.isTouching(top);
         b = car.isTouching(bottom);
         l = car.isTouching(left);
@@ -107,10 +106,6 @@ public class Animation{
         ri = car.isTouching(righti);
         
         g.setStroke(Color.BLACK);
-        
-        car2.setX((int)carPath2.getX());
-        car2.setY((int)carPath2.getY());
-        
     }
     
     public void buildTrack(){
@@ -127,23 +122,51 @@ public class Animation{
     }
     //Inner Rectangle dimensions 100,100,300,300
     public void buildCars(){//new Cars will be initialized here:)
-        car = new GameObject(50,50,25,25);
-        car2 = new GameObject((int)carPath2.getX(), (int)carPath2.getY(), 
-                (int)carPath2.getWidth(), (int)carPath2.getHeight());
+        car = new GameObject(70,70,15,15);
+        root.getChildren().add(carPath1);
+        root.getChildren().add(path1);
+        root.getChildren().add(carPath2);
+        root.getChildren().add(path2);
+        root.getChildren().add(carPath3);
+        root.getChildren().add(path3);
     }
     
     public void buildPaths(){
-        carPath2 = new Rectangle(50,50,25,25);
-        carPath2.setFill(Color.BLUE);
-        path1 = new Rectangle(25,25,450,450);
-        path1.setFill(Color.TRANSPARENT);
+        carPath1 = new Rectangle(15,15,15,15);//change this 
+        carPath1.setFill(Color.BLUE);
+        path1 = new Rectangle(15,15,470,470);//and this to change the size and 
+        path1.setFill(Color.TRANSPARENT);//path of the Transition car
         PathTransition pl = new PathTransition();
-        pl.setNode(carPath2);
+        pl.setNode(carPath1);
         pl.setPath(path1);
-        pl.setDuration(Duration.seconds(2));
+        pl.setDuration(Duration.seconds(5));
         pl.setAutoReverse(false);
         pl.setCycleCount(1);
         pl.play();
+        
+        carPath2 = new Rectangle(35,35,15,15);
+        carPath2.setFill(Color.RED);
+        path2 = new Rectangle(35,35,430,430);
+        path2.setFill(Color.TRANSPARENT);
+        PathTransition p2 = new PathTransition();
+        p2.setNode(carPath2);
+        p2.setPath(path2);
+        p2.setDuration(Duration.seconds(5));
+        p2.setAutoReverse(false);
+        p2.setCycleCount(1);
+        p2.play();
+        
+        carPath3 = new Rectangle(55,55,15,15);
+        carPath3.setFill(Color.AQUAMARINE);
+        path3 = new Rectangle(55,55,390,390);
+        path3.setFill(Color.TRANSPARENT);
+        PathTransition p3 = new PathTransition();
+        p3.setNode(carPath3);
+        p3.setPath(path3);
+        p3.setDuration(Duration.seconds(5));
+        p3.setAutoReverse(false);
+        p3.setCycleCount(1);
+        p3.play();
     }
     
     //Outer boundary accessors
