@@ -1,10 +1,14 @@
 /xstops:
-Place: 5, 10
-Name: Boston
-Place: 10, 20
-Name: Chicago
-Place: 15, 25
-Name: Barcelona
+Place: 40, 155
+Name: San Francisco
+Place: 200, 50
+Name: Rapid City
+Place: 470, 160
+Name: New York
+Place: 300, 450
+Name: Dallas
+Place: 200, 260
+Name: Albuquerque
 
 /xcars:
 Name: McQueen

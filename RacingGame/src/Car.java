@@ -9,7 +9,7 @@ public class Car{
   private String name;
   private double topSpeed;
   private double time;
-  //private Stop[] path;
+  private Stop[] path;
   private int minX, maxX, minY, maxY;
   
   //Constructor that takes the min and max dimensions of each car

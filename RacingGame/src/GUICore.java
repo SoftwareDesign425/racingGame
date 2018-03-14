@@ -26,6 +26,8 @@ public class GUICore extends Application{
   private Scene scene;
   private Animation a;
   
+  private Venue v = new Venue();
+  
   public GUICore(){
       isWin = false; isAin = false; //True if colliding, False if not colliding
       isSin = false; isDin = false;
@@ -33,7 +35,8 @@ public class GUICore extends Application{
   
   
   public void start(Stage stage){
-    a = new Animation();//Joe for Animation
+    v.load("inputFile.txt");
+    a = new Animation(v);//Joe for Animation
     a.setRate(25);
     a.getTimer().scheduleAtFixedRate(a.getTimerTask(), 1000, 1000);//Joe for
     //Animation

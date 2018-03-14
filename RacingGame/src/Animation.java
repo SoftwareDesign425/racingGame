@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 import javafx.animation.PathTransition;
@@ -8,6 +9,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;//Leaving color for next step:)
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.StrokeLineCap;
+import javafx.scene.shape.StrokeLineJoin;
 import javafx.util.Duration;
 /*
 Joseph Mitchell
@@ -38,6 +41,8 @@ public class Animation{
             topi, bottomi, lefti, righti;
     private Rectangle path1, carPath2;
     
+    private Venue venue = null;
+    
     private final Timer ti = new Timer(true);
     
     private final TimerTask task = new TimerTask() {    
@@ -54,7 +59,8 @@ public class Animation{
     private boolean to, b, l, r, toi, bi, li, ri;
     
     
-    public Animation() {
+    public Animation(Venue v) {
+        venue = v;
         rate = 1;
         path1 = new Rectangle();
         carPath2 = new Rectangle();
@@ -82,6 +88,8 @@ public class Animation{
     
     public void render(){
         g.clearRect(0,0,500,500);
+        
+        venue.drawTrack(g);
         
         top.draw(g, Color.BLACK, false);
         bottom.draw(g, Color.BLACK, false);
@@ -140,7 +148,7 @@ public class Animation{
         PathTransition pl = new PathTransition();
         pl.setNode(carPath2);
         pl.setPath(path1);
-        pl.setDuration(Duration.seconds(2));
+        pl.setDuration(Duration.seconds(25));
         pl.setAutoReverse(false);
         pl.setCycleCount(1);
         pl.play();
