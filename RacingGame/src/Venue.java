@@ -1,4 +1,3 @@
-
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -91,6 +90,14 @@ public class Venue {
         
         for(Car c : cars)
             System.out.println(c.toString());        
+    }
+    
+    public ArrayList<Car> getCars(){
+        return cars;
+    }
+    
+    public ArrayList<Stop> getStops(){
+        return stops;
     }
     
     public static void main(String [] args)
