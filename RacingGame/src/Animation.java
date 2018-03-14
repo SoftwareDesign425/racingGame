@@ -91,7 +91,7 @@ public class Animation{
         randPos3y = (55 + pos.nextInt(375));
     }
     
-    public Parent createContent(){
+    public Pane createContent(){
         root = new Pane();
         
         Canvas canvas = new Canvas(500,500);
