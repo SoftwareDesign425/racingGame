@@ -11,6 +11,8 @@ import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.StrokeLineCap;
+import javafx.scene.shape.StrokeLineJoin;
 import javafx.util.Duration;
 /*
 Joseph Mitchell
@@ -41,6 +43,8 @@ public class Animation{
             topi, bottomi, lefti, righti;
     private Rectangle path1, carPath1, path2, carPath2, path3, carPath3;
     
+    private Venue venue = null;
+    
     private final Timer ti = new Timer(true);
     
     private final TimerTask task = new TimerTask() {    
@@ -60,7 +64,8 @@ public class Animation{
     private boolean to, b, l, r, toi, bi, li, ri;
     
     
-    public Animation() {
+    public Animation(Venue v) {
+        venue = v;
         rate = 1;
         path1 = new Rectangle();
         path2 = new Rectangle();
@@ -86,7 +91,7 @@ public class Animation{
         randPos3y = (55 + pos.nextInt(375));
     }
     
-    public Parent createContent(){
+    public Pane createContent(){
         root = new Pane();
         
         Canvas canvas = new Canvas(500,500);
@@ -105,6 +110,8 @@ public class Animation{
     
     public void render(){
         g.clearRect(0,0,500,500);
+        
+        venue.drawTrack(g);
         
         top.draw(g, Color.BLACK, false);
         bottom.draw(g, Color.BLACK, false);
@@ -197,11 +204,9 @@ public class Animation{
         path1 = new Rectangle(15,15,470,470);//and this to change the size and 
         path1.setFill(Color.TRANSPARENT);//path of the Transition car
         PathTransition pl = new PathTransition();
-        pl.setNode(carPath1);
-        pl.setPath(path(15, randPos1x, randPos1y, xOry1));
-        //pl.setPath(path1);
-//        pl.setStartPosition(randPos1x, randPos1y);
-        pl.setDuration(Duration.seconds(trackRate1*20));
+        pl.setNode(carPath2);
+        pl.setPath(path1);
+        pl.setDuration(Duration.seconds(25));
         pl.setAutoReverse(false);
         pl.setCycleCount(1);
         pl.playFromStart();

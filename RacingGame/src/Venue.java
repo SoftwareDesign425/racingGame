@@ -4,6 +4,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.stream.Stream;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.StrokeLineCap;
+import javafx.scene.shape.StrokeLineJoin;
 
 
 /**
@@ -18,7 +22,6 @@ public class Venue {
     
     public Venue()
     {
-        
     }
     
     public void load(String fileName)
@@ -45,7 +48,7 @@ public class Venue {
                         
                         String name = buffereReader.readLine();
 
-                        Stop s = new Stop(name, x, y);
+                        Stop s = new Stop(name.substring("Name:".length()), x, y);
                         
                         stops.add(s);
                     }
@@ -80,6 +83,37 @@ public class Venue {
         
     }
    
+    public void drawTrack(GraphicsContext gc)
+    {
+        gc.setLineWidth(60);
+        gc.setStroke(Color.BLACK.brighter());
+        gc.setLineCap(StrokeLineCap.ROUND);
+        gc.setLineJoin(StrokeLineJoin.ROUND);
+
+        gc.beginPath();
+        gc.moveTo(stops.get(0).getX(), stops.get(0).getY());
+        for(int i=1; i<stops.size(); i++)
+        {
+            gc.lineTo(stops.get(i).getX(), stops.get(i).getY());
+        }
+        gc.lineTo(stops.get(0).getX(), stops.get(0).getY());
+        gc.stroke();
+
+        for(Stop s : stops)
+        {
+            s.draw(gc);
+        }
+    }
+    
+    public ArrayList<Stop> getStops()
+    {
+        return stops;
+    }
+    
+    public ArrayList<Car> getCars()
+    {
+        return cars;
+    }
     
     public void testLoading()
     {
