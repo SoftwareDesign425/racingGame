@@ -214,7 +214,7 @@ public class Animation{
         r3.setFill(Color.BLUEVIOLET);
     }
     
-    public Parent createContent(){
+    public Pane createContent(){
         root = new Pane();
         
         root.setMaxHeight(500);
