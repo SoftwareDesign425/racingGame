@@ -25,14 +25,12 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 // Class Compatibility/ Misc.
-import javafx.animation.PathTransition;
 
 public class GUICore extends Application{
   
   private boolean isWin, isAin, isSin, isDin;
   private Scene scene;
   private Animation a;
-  private PathTransition p1,p2,p3;
   private String inputString;
   private Alert helpAlert;
   
@@ -40,9 +38,6 @@ public class GUICore extends Application{
       isWin = false; isAin = false; //True if colliding, False if not colliding
       isSin = false; isDin = false;
       a = new Animation();
-      p1 = new PathTransition();
-      p2 = new PathTransition();
-      p3 = new PathTransition();
   }  
   
   
@@ -128,13 +123,15 @@ public class GUICore extends Application{
     animPane.getChildren().add(a.getCar3());
 
     a.getVenue().testLoading();
+        
+    a.captureXvalues();
+    a.captureYvalues();
 
-    //Null pointer exception Right here that needs to be fixed!
-    try{
-        a.moveCars();
-    }catch(NullPointerException e){
-        System.out.println("Null Pointer Exception!");
-    }
+    a.moveCars();
+        
+    a.getPath1().playFromStart();
+    a.getPath2().playFromStart();
+    a.getPath3().playFromStart();
     
     
   }

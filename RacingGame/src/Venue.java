@@ -1,4 +1,4 @@
-
+//package AnimationPractice;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -15,12 +15,14 @@ import javafx.scene.shape.Path;
  * 
  */
 public class Venue {
-    private ArrayList<Car> cars;
-    private ArrayList<Stop> stops;
-    private ArrayList<Integer> xValues;
-    private ArrayList<Integer> yValues;
-    private ArrayList<String> stopNames;
-    private Path pat1, pat2, pat3;
+    private final ArrayList<Car> cars;
+    private final ArrayList<Stop> stops;
+    private final ArrayList<Integer> xValues;
+    private final ArrayList<Integer> yValues;
+    private final ArrayList<String> stopNames;
+    private final Path pat1;
+    private final Path pat2;
+    private final Path pat3;
     
     public Venue(){
         cars = new ArrayList<Car>();
@@ -58,6 +60,7 @@ public class Venue {
                         String name = buffereReader.readLine();
 
                         Stop s = new Stop(name, x, y);
+                        
                         stops.add(s);
                         xValues.add(x);
                         yValues.add(y);
@@ -83,7 +86,6 @@ public class Venue {
             buffereReader.close(); //close file
         } catch (FileNotFoundException e) {
             System.out.println(e.getMessage());
-                    
         } catch (IOException e) {
             System.out.println(e.getMessage());
         } catch (ArrayIndexOutOfBoundsException e) {
@@ -97,6 +99,10 @@ public class Venue {
     public void testLoading()
     {
         load("inputFile.txt");
+        System.out.println(xValues.size());
+        for(Integer i : xValues){
+            System.out.println(i);
+        }
     }
     
     public Path getPath1(){
@@ -113,11 +119,17 @@ public class Venue {
     
     public ArrayList<Integer> getXvalues(){
         ArrayList<Integer> clone = new ArrayList<Integer>(xValues);
+        for(Integer i : xValues){
+            clone.add(new Integer(i));
+        }
         return clone;
     }
     
     public ArrayList<Integer> getYvalues(){
         ArrayList<Integer> clone = new ArrayList<Integer>(yValues);
-        return yValues;
+        for(Integer i : yValues){
+            clone.add(new Integer(i));
+        }
+        return clone;
     }
 }

@@ -3,6 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+//package AnimationPractice;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -19,6 +20,7 @@ import javafx.util.Duration;
  * @author Joseph Mitchell
  */
 
+//Calling FileReader twice somewhere :> 
 
 public class Animation {
     private Rectangle r1,r2,r3;
@@ -37,6 +39,12 @@ public class Animation {
         r3.setFill(Color.BLUEVIOLET);
         x = new ArrayList<Integer>();
         y = new ArrayList<Integer>();
+        path1 = new Path();
+        path2 = new Path();
+        path3 = new Path();
+        p1 = new PathTransition();
+        p2 = new PathTransition();
+        p3 = new PathTransition();
     }
     
     public void captureXvalues(){
@@ -54,15 +62,16 @@ public class Animation {
     }
     
     public void moveCars(){
-        captureXvalues();
-        captureYvalues();
+//        captureXvalues();
+//        captureYvalues();
         Random rand = new Random();
+        System.out.println(x.size());
         int choice = rand.nextInt(x.size()-1);
         int choice2 = rand.nextInt(x.size()-1);
         int choice3 = rand.nextInt(x.size()-1);
-        System.out.println("Choice1: " + choice);
-        System.out.println("Choice2: " + choice2);
-        System.out.println("Choice3: " + choice3);
+//        System.out.println("Choice1: " + choice);
+//        System.out.println("Choice2: " + choice2);
+//        System.out.println("Choice3: " + choice3);
         path1.getElements().add(new MoveTo(x.get(choice), y.get(choice)));//Randomize start and loop through
         path2.getElements().add(new MoveTo(x.get(choice2), y.get(choice2)));
         path3.getElements().add(new MoveTo(x.get(choice3), y.get(choice3)));
@@ -89,28 +98,33 @@ public class Animation {
             }
         }
         
+    }
+    
+    public PathTransition getPath1(){
         p1.setNode(r1);
         p1.setPath(v.getPath1());
         p1.setDuration(Duration.seconds(15));
         p1.setAutoReverse(false);
         p1.setCycleCount(1);
-        p1.play();
-        
-        //Path Transition for car2
+        return p1;
+    }
+    
+    public PathTransition getPath2(){
         p2.setNode(r2);
         p2.setPath(v.getPath2());
         p2.setDuration(Duration.seconds(20));
         p2.setAutoReverse(false);
         p2.setCycleCount(1);
-        p2.play();
-        
-        //Path Transition for car3
+        return p2;
+    }
+    
+    public PathTransition getPath3(){
         p3.setNode(r3);
         p3.setPath(v.getPath3());
         p3.setDuration(Duration.seconds(30));
         p3.setAutoReverse(false);
         p3.setCycleCount(1);
-        p3.play();
+        return p3;
     }
     
     public Rectangle getCar1(){
