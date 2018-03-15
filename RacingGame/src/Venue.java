@@ -1,13 +1,10 @@
-//package AnimationPractice;
+
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Random;
-import javafx.scene.shape.LineTo;
-import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 
 
@@ -18,13 +15,19 @@ import javafx.scene.shape.Path;
  * 
  */
 public class Venue {
-    private ArrayList<Car> cars = new ArrayList<Car>();
-    private ArrayList<Stop> stops= new ArrayList<Stop>();
-    private ArrayList<Integer> xValues = new ArrayList<Integer>();
-    private ArrayList<Integer> yValues = new ArrayList<Integer>();
-    private ArrayList<String> stopNames = new ArrayList<String>();
+    private ArrayList<Car> cars;
+    private ArrayList<Stop> stops;
+    private ArrayList<Integer> xValues;
+    private ArrayList<Integer> yValues;
+    private ArrayList<String> stopNames;
     private Path pat1, pat2, pat3;
+    
     public Venue(){
+        cars = new ArrayList<Car>();
+        stops = new ArrayList<Stop>();
+        xValues = new ArrayList<Integer>();
+        yValues = new ArrayList<Integer>();
+        stopNames = new ArrayList<String>();
         pat1 = new Path();
         pat2 = new Path();
         pat3 = new Path();
@@ -55,8 +58,6 @@ public class Venue {
                         String name = buffereReader.readLine();
 
                         Stop s = new Stop(name, x, y);
-                        System.out.println("X: " + x);
-                        System.out.println("Y: " + y);
                         stops.add(s);
                         xValues.add(x);
                         yValues.add(y);
@@ -96,49 +97,6 @@ public class Venue {
     public void testLoading()
     {
         load("inputFile.txt");
-        
-        for(Stop s : stops)
-            System.out.println(s.toString());
-        
-        for(Car c : cars)
-            System.out.println(c.toString());       
-        System.out.println("X Values: ");
-        for(Integer i : xValues){
-            System.out.println(i);
-        }
-        System.out.println("Y Values: ");
-        for(Integer k : yValues){
-            System.out.println(k);
-        }
-        Random rand = new Random();
-        int choice = rand.nextInt(xValues.size());
-        int choice2 = rand.nextInt(xValues.size());
-        int choice3 = rand.nextInt(xValues.size());
-        pat1.getElements().add(new MoveTo(xValues.get(choice), yValues.get(choice)));//Randomize start and loop through
-        pat2.getElements().add(new MoveTo(xValues.get(choice2), yValues.get(choice2)));
-        pat3.getElements().add(new MoveTo(xValues.get(choice3), yValues.get(choice3)));
-        if(choice == (xValues.size()-1)){
-            choice = 0;
-        }
-        int counter = 0;
-        for(int i = 0; i < xValues.size(); i++){
-            counter++;
-            if(counter != xValues.size()){
-                pat1.getElements().add(new LineTo(xValues.get(i), yValues.get(i)));
-                pat2.getElements().add(new LineTo(xValues.get(i), yValues.get(i)));
-                pat3.getElements().add(new LineTo(xValues.get(i), yValues.get(i)));
-                if(i == xValues.size()-1){
-                    i = 0;
-                }
-            }else{
-                pat1.getElements().add(new LineTo(xValues.get(choice), yValues.get(choice)));
-                pat2.getElements().add(new LineTo(xValues.get(choice2), yValues.get(choice2)));
-                pat3.getElements().add(new LineTo(xValues.get(choice3), yValues.get(choice3)));
-                if(counter == xValues.size()){
-                    break;
-                }
-            }
-        }
     }
     
     public Path getPath1(){
@@ -153,9 +111,13 @@ public class Venue {
         return pat3;
     }
     
-//    public static void main(String [] args)
-//    {
-//        Venue test = new Venue();
-//        test.testLoading();
-//    }
+    public ArrayList<Integer> getXvalues(){
+        ArrayList<Integer> clone = new ArrayList<Integer>(xValues);
+        return clone;
+    }
+    
+    public ArrayList<Integer> getYvalues(){
+        ArrayList<Integer> clone = new ArrayList<Integer>(yValues);
+        return yValues;
+    }
 }

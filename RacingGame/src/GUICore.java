@@ -21,16 +21,11 @@ import javafx.scene.layout.Pane;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent; 
 import javafx.event.EventHandler;
-import javafx.event.ActionEvent;
 // Alerts/Pop-Ups
-import java.util.Optional;
-import javafx.scene.control.Dialog;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 // Class Compatibility/ Misc.
-import javafx.scene.Parent;
 import javafx.animation.PathTransition;
-import javafx.util.Duration;
 
 public class GUICore extends Application{
   
@@ -111,7 +106,9 @@ public class GUICore extends Application{
     
 //******************* Animation *******************//
     
-    Pane animPane = coreAnim.createContent(); // This is a 500x500 Pane
+    Pane animPane = new Pane(); // This is a 500x500 Pane
+    animPane.setLayoutX(500);
+    animPane.setLayoutY(500);
     corePane.getChildren().add(animPane);
     animPane.relocate(0,0); // Move animation pane to top left corner
     
@@ -126,118 +123,22 @@ public class GUICore extends Application{
     
 //******************* JOE STUFF BELOW THIS LINE *******************// 
     
-//    a = new Animation();//Joe for Animation
-////    a.setRate(25);
-//    a.getTimer().scheduleAtFixedRate(a.getTimerTask(), 1000, 1000);//Joe for
-//    //GridPane gp = new GridPane();
-//    Button b = new Button("This is a button");//Testing purposes
-//    Pane gp = ((Pane)a.createContent());//Joe for Animation
-//    b.setTranslateX(300);
-//    b.setTranslateY(250);
-//    gp.getChildren().add(b);
-//    // Add buttons
-//    //gp.add(guiButtons, 0,0);
-//    // Add animation
-//    //gp.add(animation, 0,0);
-//    
-//    scene = new Scene(gp, 900, 900); //Dimensions will be modified based on the max x/y value
-////    scene.setOnKeyPressed(e -> {//Joe for Animation(Have speed be based by time!)
-////        for(int i = 0; i < a.getRate(); i++){
-////            if(e.getCode() == KeyCode.W){//Move forward
-////                if(a.stopW()){
-////                    isWin = false;
-////                    (a.getCar()).y -=1;//value could make the car go outside the boundary!
-////                }else{                 //have this be 1, and change the repaint time 
-////                    isWin = true;      //be the speed factor:)
-////                }
-////            }else if(e.getCode() == KeyCode.S){//Move backward
-////                if(a.stopS()){
-////                    isSin = false;
-////                    (a.getCar()).y +=1;
-////                }else{
-////                    isSin = true;
-////                }
-////            }else if(e.getCode() == KeyCode.A){//Move left
-////                if(a.stopA()){
-////                    isAin = false;
-////                    (a.getCar()).x -=1;
-////                }else{
-////                    isAin = true;
-////                }
-////            }else if(e.getCode() == KeyCode.D){//Move right
-////                if(a.stopD()){
-////                    isDin = false;
-////                    (a.getCar()).x +=1;
-////                }else{
-////                    isDin = true;
-////                }
-////            }
-////            a.render();
-////        }
-////    });
-//        a.addLines();
-//        
-//        gp.getChildren().add(a.getCar1());
-//        gp.getChildren().add(a.getCar2());
-//        gp.getChildren().add(a.getCar3());
-//
-//        
-//        a.getVenue().testLoading();
-//        
-//        
-//        //Path Transition for car1
-//        p1.setNode(a.getCar1());
-//        p1.setPath(a.getVenue().getPath1());
-//        p1.setDuration(Duration.seconds(15));
-//        p1.setAutoReverse(false);
-//        p1.setCycleCount(1);
-//        p1.play();
-//        
-//        //Path Transition for car2
-//        p2.setNode(a.getCar2());
-//        p2.setPath(a.getVenue().getPath2());
-//        p2.setDuration(Duration.seconds(20));
-//        p2.setAutoReverse(false);
-//        p2.setCycleCount(1);
-//        p2.play();
-//        
-//        //Path Transition for car3
-//        p3.setNode(a.getCar3());
-//        p3.setPath(a.getVenue().getPath3());
-//        p3.setDuration(Duration.seconds(30));
-//        p3.setAutoReverse(false);
-//        p3.setCycleCount(1);
-//        p3.play();
-//        
-//        
-//    stage.setTitle("Project 3 - Racing Game");       
-//    stage.setScene(scene); 
-//    //stage.setSize(500,500);
-//    stage.setResizable(true);    
-//    stage.sizeToScene();
-//    stage.show();
+    animPane.getChildren().add(a.getCar1());
+    animPane.getChildren().add(a.getCar2());
+    animPane.getChildren().add(a.getCar3());
+
+    a.getVenue().testLoading();
+
+    //Null pointer exception Right here that needs to be fixed!
+    try{
+        a.moveCars();
+    }catch(NullPointerException e){
+        System.out.println("Null Pointer Exception!");
+    }
+    
     
   }
   
-//  public void keyCommands(Scene scene, Animation a){
-//      
-//  }
-  
-//  public boolean inContactTop(Animation a){
-//      return (a.getCar()).isTouching(a.getTop());
-//  }
-//  
-//  public boolean inContactBottom(Animation a){
-//      return (a.getCar()).isTouching(a.getBottom());
-//  }
-//  
-//  public boolean inContactLeft(Animation a){
-//      return (a.getCar()).isTouching(a.getLeft());
-//  }
-//  
-//  public boolean inContactRight(Animation a){
-//      return (a.getCar()).isTouching(a.getRight());
-//  }
   
   // File selection
   public void fileSelection(){
