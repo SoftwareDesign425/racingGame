@@ -1,13 +1,14 @@
+//package AnimationPractice;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.stream.Stream;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.StrokeLineCap;
-import javafx.scene.shape.StrokeLineJoin;
+import java.util.Random;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
 
 
 /**
@@ -19,9 +20,14 @@ import javafx.scene.shape.StrokeLineJoin;
 public class Venue {
     private ArrayList<Car> cars = new ArrayList<Car>();
     private ArrayList<Stop> stops= new ArrayList<Stop>();
-    
-    public Venue()
-    {
+    private ArrayList<Integer> xValues = new ArrayList<Integer>();
+    private ArrayList<Integer> yValues = new ArrayList<Integer>();
+    private ArrayList<String> stopNames = new ArrayList<String>();
+    private Path pat1, pat2, pat3;
+    public Venue(){
+        pat1 = new Path();
+        pat2 = new Path();
+        pat3 = new Path();
     }
     
     public void load(String fileName)
@@ -48,9 +54,13 @@ public class Venue {
                         
                         String name = buffereReader.readLine();
 
-                        Stop s = new Stop(name.substring("Name:".length()), x, y);
-                        
+                        Stop s = new Stop(name, x, y);
+                        System.out.println("X: " + x);
+                        System.out.println("Y: " + y);
                         stops.add(s);
+                        xValues.add(x);
+                        yValues.add(y);
+                        stopNames.add(name);
                     }
                 }
                     
@@ -83,38 +93,6 @@ public class Venue {
         
     }
    
-    public void drawTrack(GraphicsContext gc)
-    {
-        gc.setLineWidth(60);
-        gc.setStroke(Color.BLACK.brighter());
-        gc.setLineCap(StrokeLineCap.ROUND);
-        gc.setLineJoin(StrokeLineJoin.ROUND);
-
-        gc.beginPath();
-        gc.moveTo(stops.get(0).getX(), stops.get(0).getY());
-        for(int i=1; i<stops.size(); i++)
-        {
-            gc.lineTo(stops.get(i).getX(), stops.get(i).getY());
-        }
-        gc.lineTo(stops.get(0).getX(), stops.get(0).getY());
-        gc.stroke();
-
-        for(Stop s : stops)
-        {
-            s.draw(gc);
-        }
-    }
-    
-    public ArrayList<Stop> getStops()
-    {
-        return stops;
-    }
-    
-    public ArrayList<Car> getCars()
-    {
-        return cars;
-    }
-    
     public void testLoading()
     {
         load("inputFile.txt");
@@ -123,20 +101,61 @@ public class Venue {
             System.out.println(s.toString());
         
         for(Car c : cars)
-            System.out.println(c.toString());        
+            System.out.println(c.toString());       
+        System.out.println("X Values: ");
+        for(Integer i : xValues){
+            System.out.println(i);
+        }
+        System.out.println("Y Values: ");
+        for(Integer k : yValues){
+            System.out.println(k);
+        }
+        Random rand = new Random();
+        int choice = rand.nextInt(xValues.size());
+        int choice2 = rand.nextInt(xValues.size());
+        int choice3 = rand.nextInt(xValues.size());
+        pat1.getElements().add(new MoveTo(xValues.get(choice), yValues.get(choice)));//Randomize start and loop through
+        pat2.getElements().add(new MoveTo(xValues.get(choice2), yValues.get(choice2)));
+        pat3.getElements().add(new MoveTo(xValues.get(choice3), yValues.get(choice3)));
+        if(choice == (xValues.size()-1)){
+            choice = 0;
+        }
+        int counter = 0;
+        for(int i = 0; i < xValues.size(); i++){
+            counter++;
+            if(counter != xValues.size()){
+                pat1.getElements().add(new LineTo(xValues.get(i), yValues.get(i)));
+                pat2.getElements().add(new LineTo(xValues.get(i), yValues.get(i)));
+                pat3.getElements().add(new LineTo(xValues.get(i), yValues.get(i)));
+                if(i == xValues.size()-1){
+                    i = 0;
+                }
+            }else{
+                pat1.getElements().add(new LineTo(xValues.get(choice), yValues.get(choice)));
+                pat2.getElements().add(new LineTo(xValues.get(choice2), yValues.get(choice2)));
+                pat3.getElements().add(new LineTo(xValues.get(choice3), yValues.get(choice3)));
+                if(counter == xValues.size()){
+                    break;
+                }
+            }
+        }
     }
     
-    public ArrayList<Car> getCars(){
-        return cars;
+    public Path getPath1(){
+        return pat1;
     }
     
-    public ArrayList<Stop> getStops(){
-        return stops;
+    public Path getPath2(){
+        return pat2;
     }
     
-    public static void main(String [] args)
-    {
-        Venue test = new Venue();
-        test.testLoading();
+    public Path getPath3(){
+        return pat3;
     }
+    
+//    public static void main(String [] args)
+//    {
+//        Venue test = new Venue();
+//        test.testLoading();
+//    }
 }
