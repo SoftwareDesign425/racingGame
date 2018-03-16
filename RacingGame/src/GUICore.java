@@ -118,17 +118,19 @@ public class GUICore extends Application{
     
 //******************* JOE STUFF BELOW THIS LINE *******************// 
     
+    a.getVenue().testLoading();
+        
+    a.captureStopNames();
+    a.captureXvalues();
+    a.captureYvalues();
+
+    animPane.getChildren().addAll(a.init_StopNames());
     animPane.getChildren().add(a.getCar1());
     animPane.getChildren().add(a.getCar2());
     animPane.getChildren().add(a.getCar3());
 
-    a.getVenue().testLoading();
-        
-    a.captureXvalues();
-    a.captureYvalues();
-
     a.moveCars();
-        
+
     a.getPath1().playFromStart();
     a.getPath2().playFromStart();
     a.getPath3().playFromStart();

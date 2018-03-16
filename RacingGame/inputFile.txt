@@ -3,7 +3,7 @@ Place: 40, 155
 Name: San Francisco
 Place: 155, 50
 Name: Rapid City
-Place: 50, 160
+Place: 350, 160
 Name: New York
 Place: 160, 450
 Name: Dallas
