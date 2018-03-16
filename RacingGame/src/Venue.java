@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import javafx.scene.shape.Path;
 
 
 /**
@@ -20,9 +19,7 @@ public class Venue {
     private final ArrayList<Integer> xValues;
     private final ArrayList<Integer> yValues;
     private final ArrayList<String> stopNames;
-    private final Path pat1;
-    private final Path pat2;
-    private final Path pat3;
+    private final ArrayList<String> carNames;
     
     public Venue(){
         cars = new ArrayList<Car>();
@@ -30,9 +27,7 @@ public class Venue {
         xValues = new ArrayList<Integer>();
         yValues = new ArrayList<Integer>();
         stopNames = new ArrayList<String>();
-        pat1 = new Path();
-        pat2 = new Path();
-        pat3 = new Path();
+        carNames = new ArrayList<String>();
     }
     
     public void load(String fileName)
@@ -74,12 +69,12 @@ public class Venue {
                         
                         if(line.isEmpty())
                             break;
-
-                        String name = line.substring("Name:".length());
                         
+                        String name = line.substring("Name:".length());
                         Car c = new Car(name);
                         
-                        cars.add(c);                 
+                        cars.add(c);    
+                        carNames.add(name);
                     }
                 }
             }
@@ -99,37 +94,35 @@ public class Venue {
     public void testLoading()
     {
         load("inputFile.txt");
-        System.out.println(xValues.size());
-        for(Integer i : xValues){
-            System.out.println(i);
-        }
-    }
-    
-    public Path getPath1(){
-        return pat1;
-    }
-    
-    public Path getPath2(){
-        return pat2;
-    }
-    
-    public Path getPath3(){
-        return pat3;
     }
     
     public ArrayList<Integer> getXvalues(){
-        ArrayList<Integer> clone = new ArrayList<Integer>(xValues);
-        for(Integer i : xValues){
-            clone.add(new Integer(i));
-        }
-        return clone;
+        return xValues;
     }
     
     public ArrayList<Integer> getYvalues(){
-        ArrayList<Integer> clone = new ArrayList<Integer>(yValues);
-        for(Integer i : yValues){
-            clone.add(new Integer(i));
+        return yValues;
+    }
+    
+    public ArrayList<String> getStopNames(){
+        return stopNames;
+    }
+    
+    public ArrayList<String> getCarNames(){
+        return carNames;
+    }
+    
+    public double distanceT(Car c){//Joe to calculate total distance of the track:)
+        double distance = 0;
+        int next = 1;
+        for(int i = 0; i < stops.size()-1; i++){
+            distance += c.calcStop(stops.get(i), stops.get(next));
+            next++;
         }
-        return clone;
+        return distance;
+    }
+    
+    public ArrayList<Car> getCars(){
+        return cars;
     }
 }

@@ -1,15 +1,16 @@
 /xstops:
 Place: 40, 155
 Name: San Francisco
-Place: 155, 50
+Place: 250, 50
 Name: Rapid City
-Place: 350, 160
+Place: 300, 160
 Name: New York
-Place: 160, 450
+Place: 185, 450
 Name: Dallas
-Place: 450, 260
+Place: 350, 260
 Name: Albuquerque
 
 /xcars:
 Name: McQueen
 Name: Sally
+Name: Larry
