@@ -163,9 +163,13 @@ public class Animation {
     public PathTransition getPath1(){
         p1.setNode(r1);
         p1.setPath(path1);
-        p1.setDuration(Duration.seconds(5));
+        p1.setDuration(Duration.seconds(20));
         p1.setAutoReverse(false);
         p1.setCycleCount(1);
+        p1.setOnFinished(event -> {
+        // after transition is finished continue with next one
+            System.out.println("Car1 has won!");
+        });
         return p1;
     }
     
@@ -175,15 +179,23 @@ public class Animation {
         p2.setDuration(Duration.seconds(5));
         p2.setAutoReverse(false);
         p2.setCycleCount(1);
+        p2.setOnFinished(event -> {
+        // after transition is finished continue with next one
+            System.out.println("Car2 has won!");
+        });
         return p2;
     }
     
     public PathTransition getPath3(){
         p3.setNode(r3);
         p3.setPath(path3);
-        p3.setDuration(Duration.seconds(5));
+        p3.setDuration(Duration.seconds(15));
         p3.setAutoReverse(false);
         p3.setCycleCount(1);
+        p3.setOnFinished(event -> {
+        // after transition is finished continue with next one
+            System.out.println("Car3 has won!");
+        });
         return p3;
     }
     
