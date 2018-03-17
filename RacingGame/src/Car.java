@@ -63,6 +63,10 @@ public class Car{
     return time;
   }
   
+  public String getName()
+  {
+      return name;
+  }
   
   public Stop[] getPath(){
     return path;
