@@ -307,6 +307,18 @@ public class Animation {
         return gameOver;
     }
     
+    public ParallelTransition getPT1(){
+      return pt1;
+    }
+    
+    public ParallelTransition getPT2(){
+      return pt2;
+    }
+    
+    public ParallelTransition getPT3(){
+      return pt3;
+    }
+    
     public Text getWinner(){//Returns the winner of the race:)
         return winner;
     }

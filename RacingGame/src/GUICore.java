@@ -25,6 +25,7 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 // Class Compatibility/ Misc.
+import javafx.animation.Animation.Status;
 
 public class GUICore extends Application{
   
@@ -33,11 +34,14 @@ public class GUICore extends Application{
   private Animation a;
   private String inputString;
   private Alert helpAlert;
+  private Alert winAlert;
+  private boolean winner;
   
   public GUICore(){
       isWin = false; isAin = false; //True if colliding, False if not colliding
       isSin = false; isDin = false;
       a = new Animation();
+      winner = false;
   }  
   
   
@@ -51,28 +55,49 @@ public class GUICore extends Application{
     coreVenue.load(inputString);
     Animation coreAnim = new Animation();
     Pane corePane = new Pane();
-    corePane.setPrefSize(625,500); // Allotting a 125x500 space for our menu
+    corePane.setPrefSize(650,500); // Allotting a 150x500 space for our menu
     
     // Alerts
     helpAlert = new Alert(AlertType.INFORMATION, "Help information will go here once created.");
     helpAlert.setHeaderText("Game Help");
+    winAlert = new Alert(AlertType.CONFIRMATION, "The winner is " + a.getWinner().getText());
     
 //******************* Menu *******************//
     
     // Start button
-    Button startButton = new Button("Begin Race");
+    Button startButton = new Button("Begin/Reset Race");
     startButton.setOnMouseClicked((new EventHandler<MouseEvent>() {
       public void handle(MouseEvent event){
-        // Not implemented properly yet
+        winner = false;
+        a.getPT1().playFromStart();
+        a.getPT2().playFromStart();
+        a.getPT3().playFromStart();
       }
     }));
     startButton.relocate(525, 25);
     
     // Reset button
-    Button resetButton = new Button("Reset Race");
+    Button resetButton = new Button("Pause Race");
     resetButton.setOnMouseClicked((new EventHandler<MouseEvent>() {
       public void handle(MouseEvent event){
-        // No reset method exists yet
+        if(a.getPT1().getStatus().toString().equals("PAUSED") || a.getPT2().getStatus().toString().equals("PAUSED") || a.getPT3().getStatus().toString().equals("PAUSED")){ // If any are paused, unpause
+          resetButton.setText("Pause Race");
+          if(!a.getPT1().getStatus().toString().equals("STOPPED")){ // Don't attempt to play animation if it's already finished
+            a.getPT1().play();
+          }
+          if(!a.getPT2().getStatus().toString().equals("STOPPED")){
+            a.getPT2().play();
+          }
+          if(!a.getPT3().getStatus().toString().equals("STOPPED")){
+            a.getPT3().play();
+          }
+        }
+        else{ // If none are paused, pause
+          resetButton.setText("Play Race");
+          a.getPT1().pause();
+          a.getPT2().pause();
+          a.getPT3().pause();
+        }
       }
     }));
     resetButton.relocate(525, 55);
@@ -118,7 +143,7 @@ public class GUICore extends Application{
     
 //******************* JOE STUFF BELOW THIS LINE *******************// 
     
-        a.getVenue().testLoading();
+        a.getVenue().load(inputString);
         
         a.captureStopNames();
         a.captureCarNames();
@@ -136,12 +161,20 @@ public class GUICore extends Application{
         animPane.getChildren().add(a.getCar3Name());
         
         a.moveCars();
+    
+        a.getSimotaneous1();
+        a.getSimotaneous2();
+        a.getSimotaneous3();
         
-        a.getSimotaneous1().playFromStart();
-        a.getSimotaneous2().playFromStart();
-        a.getSimotaneous3().playFromStart();
-    
-    
+        a.getPT1().playFromStart(); // Immediately begin..
+        a.getPT1().stop(); // And then immediately stop. This puts our objects visually into position without a "true" start.
+        a.getPT2().playFromStart(); // Repeat for other cars
+        a.getPT2().stop();
+        a.getPT3().playFromStart();
+        a.getPT3().stop();
+        
+        System.out.println(a.getWinner().getText());
+        
   }
   
   
