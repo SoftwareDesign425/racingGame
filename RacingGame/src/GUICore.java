@@ -60,7 +60,7 @@ public class GUICore extends Application{
     // Alerts
     helpAlert = new Alert(AlertType.INFORMATION, "Help information will go here once created.");
     helpAlert.setHeaderText("Game Help");
-    winAlert = new Alert(AlertType.CONFIRMATION, "The winner is " + a.getWinner().getText());
+    //winAlert = new Alert(AlertType.CONFIRMATION, "The winner is " + a.getWinner().getText()); //Commented out the stuff I'm absolutely know doesn't work now
     
 //******************* Menu *******************//
     
@@ -68,10 +68,10 @@ public class GUICore extends Application{
     Button startButton = new Button("Begin/Reset Race");
     startButton.setOnMouseClicked((new EventHandler<MouseEvent>() {
       public void handle(MouseEvent event){
-        winner = false;
-        a.getPT1().playFromStart();
-        a.getPT2().playFromStart();
-        a.getPT3().playFromStart();
+//        winner = false;
+//        a.getPT1().playFromStart();
+//        a.getPT2().playFromStart();
+//        a.getPT3().playFromStart();
       }
     }));
     startButton.relocate(525, 25);
@@ -80,24 +80,24 @@ public class GUICore extends Application{
     Button resetButton = new Button("Pause Race");
     resetButton.setOnMouseClicked((new EventHandler<MouseEvent>() {
       public void handle(MouseEvent event){
-        if(a.getPT1().getStatus().toString().equals("PAUSED") || a.getPT2().getStatus().toString().equals("PAUSED") || a.getPT3().getStatus().toString().equals("PAUSED")){ // If any are paused, unpause
-          resetButton.setText("Pause Race");
-          if(!a.getPT1().getStatus().toString().equals("STOPPED")){ // Don't attempt to play animation if it's already finished
-            a.getPT1().play();
-          }
-          if(!a.getPT2().getStatus().toString().equals("STOPPED")){
-            a.getPT2().play();
-          }
-          if(!a.getPT3().getStatus().toString().equals("STOPPED")){
-            a.getPT3().play();
-          }
-        }
-        else{ // If none are paused, pause
-          resetButton.setText("Play Race");
-          a.getPT1().pause();
-          a.getPT2().pause();
-          a.getPT3().pause();
-        }
+//        if(a.getPT1().getStatus().toString().equals("PAUSED") || a.getPT2().getStatus().toString().equals("PAUSED") || a.getPT3().getStatus().toString().equals("PAUSED")){ // If any are paused, unpause
+//          resetButton.setText("Pause Race");
+//          if(!a.getPT1().getStatus().toString().equals("STOPPED")){ // Don't attempt to play animation if it's already finished
+//            a.getPT1().play();
+//          }
+//          if(!a.getPT2().getStatus().toString().equals("STOPPED")){
+//            a.getPT2().play();
+//          }
+//          if(!a.getPT3().getStatus().toString().equals("STOPPED")){
+//            a.getPT3().play();
+//          }
+//        }
+//        else{ // If none are paused, pause
+//          resetButton.setText("Play Race");
+//          a.getPT1().pause();
+//          a.getPT2().pause();
+//          a.getPT3().pause();
+//        }
       }
     }));
     resetButton.relocate(525, 55);
@@ -143,37 +143,23 @@ public class GUICore extends Application{
     
 //******************* JOE STUFF BELOW THIS LINE *******************// 
     
-        a.getVenue().load(inputString);
+        a.getVenue().testLoading();
         
-        a.captureStopNames();
-        a.captureCarNames();
-        a.captureXvalues();
-        a.captureYvalues();
-        a.captureCars();
+        a.captureAllValues();//Replaces all of the captures
         
-        a.init_CarNames();
+        //Working version
+        a.init_Cars();
+        a.buildCars();
+        a.buildPaths();
+        a.buildTransitions();
+        a.playTransitions();
+        
         animPane.getChildren().addAll(a.init_StopNames());
-        animPane.getChildren().add(a.getCar1());
-        animPane.getChildren().add(a.getCar2());
-        animPane.getChildren().add(a.getCar3());
-        animPane.getChildren().add(a.getCar1Name());
-        animPane.getChildren().add(a.getCar2Name());
-        animPane.getChildren().add(a.getCar3Name());
+        animPane.getChildren().addAll(a.getCarAnim());
+        animPane.getChildren().addAll(a.getCarNames());
         
-        a.moveCars();
-    
-        a.getSimotaneous1();
-        a.getSimotaneous2();
-        a.getSimotaneous3();
         
-        a.getPT1().playFromStart(); // Immediately begin..
-        a.getPT1().stop(); // And then immediately stop. This puts our objects visually into position without a "true" start.
-        a.getPT2().playFromStart(); // Repeat for other cars
-        a.getPT2().stop();
-        a.getPT3().playFromStart();
-        a.getPT3().stop();
-        
-        System.out.println(a.getWinner().getText());
+        a.playTransitions();
         
   }
   

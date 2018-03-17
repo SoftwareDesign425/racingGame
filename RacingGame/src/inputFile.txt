@@ -11,8 +11,12 @@ Place: 350, 260
 Name: Albuquerque
 Place: 250, 250
 Name: Alaska
+Place: 30, 200
+Name: San Antonio
 
 /xcars:
 Name: McQueen
 Name: Sally
 Name: Larry
+Name: Jerry
+Name: James

@@ -1,7 +1,5 @@
-
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 
 /*
 Joseph Mitchell
@@ -62,12 +60,12 @@ public class GameObject{
         }
     }
     
-//    public Car car(){
-//        return new Car(x, x+w, y, y+h);
-//    }
-//    public boolean isTouching(GameObject other){
-//        return car().isTouching(other.car());
-//    }
+    public Car car(){
+        return new Car(x, x+w, y, y+h);
+    }
+    public boolean isTouching(GameObject other){
+        return car().isTouching(other.car());
+    }
     
     
 }

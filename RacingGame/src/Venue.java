@@ -16,10 +16,18 @@ import java.util.ArrayList;
 public class Venue {
     private final ArrayList<Car> cars;
     private final ArrayList<Stop> stops;
+    private final ArrayList<Integer> xValues;
+    private final ArrayList<Integer> yValues;
+    private final ArrayList<String> stopNames;
+    private final ArrayList<String> carNames;
     
     public Venue(){
         cars = new ArrayList<Car>();
         stops = new ArrayList<Stop>();
+        xValues = new ArrayList<Integer>();
+        yValues = new ArrayList<Integer>();
+        stopNames = new ArrayList<String>();
+        carNames = new ArrayList<String>();
     }
     
     public void load(String fileName)
@@ -49,6 +57,9 @@ public class Venue {
                         Stop s = new Stop(name, x, y);
                         
                         stops.add(s);
+                        xValues.add(x);
+                        yValues.add(y);
+                        stopNames.add(name);
                     }
                 }
                     
@@ -63,6 +74,7 @@ public class Venue {
                         Car c = new Car(name);
                         
                         cars.add(c);    
+                        carNames.add(name);
                     }
                 }
             }
@@ -85,39 +97,19 @@ public class Venue {
     }
     
     public ArrayList<Integer> getXvalues(){
-        ArrayList<Integer> retValue = new ArrayList<Integer>();
-        
-        for(Stop s : stops)
-            retValue.add(s.getX());
-        
-        return retValue;
+        return xValues;
     }
     
     public ArrayList<Integer> getYvalues(){
-        ArrayList<Integer> retValue = new ArrayList<Integer>();
-        
-        for(Stop s : stops)
-            retValue.add(s.getY());
-        
-        return retValue;
+        return yValues;
     }
     
     public ArrayList<String> getStopNames(){
-        ArrayList<String> retValue = new ArrayList<String>();
-        
-        for(Stop s : stops)
-            retValue.add(s.getName());
-        
-        return retValue;
+        return stopNames;
     }
     
     public ArrayList<String> getCarNames(){
-        ArrayList<String> retValue = new ArrayList<String>();
-        
-        for(Car c : cars)
-            retValue.add(c.getName());
-        
-        return retValue;
+        return carNames;
     }
     
     public double distanceT(Car c){//Joe to calculate total distance of the track:)
@@ -132,10 +124,5 @@ public class Venue {
     
     public ArrayList<Car> getCars(){
         return cars;
-    }
-    
-    public ArrayList<Stop> getStops()
-    {
-        return stops;
     }
 }
