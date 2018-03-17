@@ -194,7 +194,7 @@ public class Animation {
             if(!gameOver){
                 gameOver = true;
                 System.out.println("BLUE WINS");
-                winner = new Text(n.get(0));
+                winner.setText(n.get(0));
                 System.out.println("Winner Name: " + n.get(0));
                 winner.setStroke(Color.BLUE);
                 winner.relocate(250,250);
@@ -223,7 +223,7 @@ public class Animation {
             if(!gameOver){
                 gameOver = true;
                 System.out.println("RED WINS");
-                winner = new Text(n.get(1));
+                winner.setText(n.get(1));
                 System.out.println("Winner Name: " + n.get(1));
                 winner.setStroke(Color.RED);
                 winner.relocate(250, 250);
@@ -252,7 +252,7 @@ public class Animation {
             if(!gameOver){
                 gameOver = true;
                 System.out.println("BLUEVIOLET WINS");
-                winner = new Text(n.get(2));
+                winner.setText(n.get(2));
                 System.out.println("Winner Name: " + n.get(2));
                 winner.setStroke(Color.BLUEVIOLET);
                 winner.relocate(250, 250);
