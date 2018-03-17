@@ -133,4 +133,9 @@ public class Venue {
     public ArrayList<Car> getCars(){
         return cars;
     }
+    
+    public ArrayList<Stop> getStops()
+    {
+        return stops;
+    }
 }
