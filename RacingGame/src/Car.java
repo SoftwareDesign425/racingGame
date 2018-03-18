@@ -66,8 +66,7 @@ public class Car{
     return path;
   }
   
-  public String getName()
-  {
+  public String getName(){
       return name;
   }
   
