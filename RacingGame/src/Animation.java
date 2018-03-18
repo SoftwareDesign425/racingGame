@@ -270,6 +270,25 @@ public class Animation {
         a.getChildren().add(t);//adds a new Timeline object to each ParallelTransition
         return a;//returns the set ParallelTransition
     }
+    
+    //Accessor for ParallelTransition array
+    public ArrayList<ParallelTransition> getPA(){
+      return pa;
+    }
+    
+    //Special Accessor for status
+    public String getStatus(){
+      for(ParallelTransition i : pa){
+        if(i.getStatus().toString().equals("RUNNING")){ // If ANY are running, this is applicable
+          return "RUNNING";
+        }
+        if(i.getStatus().toString().equals("PAUSED")){ // If ANY are paused, they all must be
+          return "PAUSED";
+        }
+      }
+      return "STOPPED"; // If none are running or paused, all must be stopped
+    }
+    
     //Accessors for new ArrayLists
     public ArrayList<Rectangle> getCarAnim(){                                       
         return carAnim;
