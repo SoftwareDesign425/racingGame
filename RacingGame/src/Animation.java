@@ -17,10 +17,6 @@ np (ArrayList<PathTransition>) - holds PathTransitions for all names
 //These PathTransition's will be paired (car-name) to ParallelTransitions
 pa (ArrayList<ParallelTransition>) - holds ParallelTransitions for all cars && car names
 v (Venue) - an instance of venue for file reading(game info grabbing).
-x (ArrayList<Integer>) - holds the x coordinates of all stops for track.
-y (ArrayList<Integer>) - holds the y coordinates of all stops for track.
-s (ArrayList<String>) - holds the names of the stops
-n (ArrayList<String>) - holds the names of the cars
 t (ArrayList<Text>) - will hold the names of stops in Text objects and send to GUICore
 n_t (ArrayList<Text>) - will hold the names of cars in Text objects and sent to GUICore
 cars (ArrayList<Car>) - will capture all cars from inputFile.txt and initialize random speed.
@@ -76,14 +72,13 @@ import javafx.util.Duration;
 
 public class Animation {
     //New ArrayLists
-    private ArrayList<Rectangle> carAnim;//Only twenty-one attributes
+    private ArrayList<Rectangle> carAnim;//Only sixteen attributes:)
     private ArrayList<Path> carPaths;
     private ArrayList<Path> namePaths;
     private ArrayList<PathTransition> p;
     private ArrayList<PathTransition> np;
     private ArrayList<ParallelTransition> pa;
-    private ArrayList<Integer> x,y;
-    private ArrayList<String> s,n;
+    private ArrayList<Stop> stops;
     private ArrayList<Text> t,n_t;
     private ArrayList<Car> cars;
     private Venue v;
@@ -107,13 +102,10 @@ public class Animation {
         p = new ArrayList<PathTransition>();
         np = new ArrayList<PathTransition>();
         pa = new ArrayList<ParallelTransition>();
-        x = new ArrayList<Integer>();
-        y = new ArrayList<Integer>();
-        s = new ArrayList<String>();
-        n = new ArrayList<String>();
         t = new ArrayList<Text>();
         n_t = new ArrayList<Text>();
         cars = new ArrayList<Car>();
+        stops = new ArrayList<Stop>();
         v = new Venue();
         endOfRace = false;
         pOrder1 = "";
@@ -122,140 +114,136 @@ public class Animation {
         sec = 0;
     }
     
-    public void captureAllValues(){                                               //Called this Method
-        x = v.getXvalues();
-        y = v.getYvalues();
-        s = v.getStopNames();
-        n = v.getCarNames();
+    public void captureAllValues(){       
         cars = v.getCars();
+        stops = v.getStops();//captures all car and stop data(collected from inputFile.txt)
     }
     
-    public ArrayList<Text> init_StopNames(){                                      //Called this Method
-        for(int i = 0; i < s.size(); i++){
-            t.add(new Text(s.get(i)));
-            t.get(i).relocate(x.get(i), y.get(i));
+    public ArrayList<Text> init_StopNames(){                                      
+        for(int i = 0; i < stops.size(); i++){
+            t.add(new Text(stops.get(i).getName())); //Creates a new Text object with for each stop name
+            t.get(i).relocate(stops.get(i).getX(), stops.get(i).getY());//Relocates them to there stop coordinates
         }
-        return t;
+        return t;//returns ArrayList to the Pane in GUICore
     }
     
-    public ArrayList<Text> init_Cars(){                                           //Called this Method
-        for(int i = 0; i < n.size(); i++){
-            n_t.add(new Text(n.get(i)));
+    public ArrayList<Text> init_Cars(){                                           
+        for(int i = 0; i < cars.size(); i++){
+            n_t.add(new Text(cars.get(i).getName()));//Adds each car name to a text object
             double r = Math.random();
             double g = Math.random();
             double b = Math.random();
-            n_t.get(i).setFill(Color.color(r, g, b));
-            Rectangle re = new Rectangle(50,50,15,15);
-            re.setFill(Color.color(r, g, b));
+            n_t.get(i).setFill(Color.color(r, g, b));//Fills text object with a random color
+            Rectangle re = new Rectangle(50,50,15,15);//Creates new car
+            re.setFill(Color.color(r, g, b));//Gives new car a random color
             carAnim.add(re);
         }
         return n_t;
     }
     
-    public void buildPaths(){                                                      //Called this method
+    public void buildPaths(){                                                      
         int counter = 1;
         for(int i = 0; i < cars.size(); i++){
-            Path p = new Path();
-            Path n = new Path();
-            moveCar(p, n, counter);
-            counter++;
+            Path p = new Path();//creates new path for the car
+            Path n = new Path();//creates new path for the name of the car
+            moveCar(p, n, counter);//adds the path to each car
+            counter++;//loops through giving each car a path
         }
     }
     
     public void moveCar(Path cp, Path np, int counter){
         Random rand = new Random();
-        int choice = rand.nextInt(x.size());
-        cp.getElements().add(new MoveTo(x.get(choice), y.get(choice)));
-        np.getElements().add(new MoveTo(x.get(choice), y.get(choice)- (15*counter)));//Places each car at their initial starting point
-        System.out.println("Car " + counter + " started at: " + s.get(choice));
-        int track = choice+1;
-        for(int i = 0; i < x.size(); i++){
-            if(track >= x.size()){
+        int choice = rand.nextInt(stops.size());//random integer from 0 to stop size - 1
+        cp.getElements().add(new MoveTo(stops.get(choice).getX(), stops.get(choice).getY()));
+        np.getElements().add(new MoveTo(stops.get(choice).getX(), stops.get(choice).getY()- (15*counter)));//Places each car at their initial starting point
+        System.out.println("Car " + counter + " started at: " + stops.get(choice));
+        int track = choice+1;//starting postition + 1
+        for(int i = 0; i < stops.size(); i++){
+            if(track >= stops.size()){//if the track is out of bounds of the arrayList then reset track to zero
                 track = 0;
             }
             pOrder1 += track;//reset this back to "" after each call
             track++;
         }
-        for(int i = 0; i < pOrder1.length(); i++){
-            String i_s = "", i_s2 = "", i_s3 = "";
-            i_s += pOrder1.charAt(i);
-            int index = Integer.parseInt(i_s);
-            cp.getElements().add(new LineTo(x.get((index)), y.get(index)));
-            np.getElements().add(new LineTo(x.get(index), y.get(index)-(15*counter)));
+        for(int i = 0; i < pOrder1.length(); i++){//pOrder now holds all of the stops to make it go full circle(start and end at the same stop hitting all stops)
+            String i_s = "";
+            i_s += pOrder1.charAt(i);//Takes each position's index
+            int index = Integer.parseInt(i_s);//casts to Integer
+            cp.getElements().add(new LineTo(stops.get((index)).getX(), stops.get(index).getY()));//adds the position's path to the car path
+            np.getElements().add(new LineTo(stops.get(index).getX(), stops.get(index).getY()-(15*counter)));//and name path (y-namePath is -15pxl.)[Careful how many cars you add, because the car names could go off screen]
         }
-        pOrder1 = "";
-        carPaths.add(cp);
-        namePaths.add(np);
+        pOrder1 = "";//reset pOrder1 for the next race
+        carPaths.add(cp);//adds the carPaths to ArrayList
+        namePaths.add(np);//adds the namePaths to ArrayList
     }
     
-    public void buildTransitions(){//This is not playTransitions                   //Called this method
-        for(int i = 0; i < carPaths.size(); i++){
-            PathTransition pathC = new PathTransition();
-            PathTransition pathN = new PathTransition();
-            p.add(setPath(carAnim.get(i),carPaths.get(i),pathC,v.distanceT(cars.get(i))/cars.get(i).getSpeed()));//Adding speed:)
-            np.add(setPath(n_t.get(i),namePaths.get(i),pathN,v.distanceT(cars.get(i))/cars.get(i).getSpeed())); 
-            p.get(i).statusProperty().addListener(new ChangeListener<Status>() {
+    public void buildTransitions(){                   
+        for(int i = 0; i < carPaths.size(); i++){//Builds the pathTransition for each carPath and namePath
+            PathTransition pathC = new PathTransition();//new car PathTransition
+            PathTransition pathN = new PathTransition();//new name PathTransition
+            p.add(setPath(carAnim.get(i),carPaths.get(i),pathC,v.distanceT(cars.get(i))/cars.get(i).getSpeed()));//Takes the car,carPath,car PathTransition,Adding speed:)[passes to setPath method]
+            np.add(setPath(n_t.get(i),namePaths.get(i),pathN,v.distanceT(cars.get(i))/cars.get(i).getSpeed()));//Takes the car name,carNamePath,car name PathTransition,Adding speed:)[passes to setPath method]
+            p.get(i).statusProperty().addListener(new ChangeListener<Status>() {//will determine if the animations are still running, using ChangeListener, Status, and ObservableValue classes
                 @Override
                 public void changed(ObservableValue<? extends Status> observableValue,
                                 Status oldValue, Status newValue) {
                     if(newValue==Status.RUNNING){
                     }else{
                         if(!endOfRace)
-                          if(checkDuration(p)>=0){System.out.println("The winner is: " + n.get(checkDuration(p)) );};//This is the winner:)(index of checkDuration(p))
+                          if(checkDuration(p)>=0){System.out.println("The winner is: " + cars.get(checkDuration(p)).getName() );};//This is the winner:)(index of checkDuration(p))
                     }
                 }
             });
         }
     }
     
-    public int checkDuration(ArrayList<PathTransition> p){
+    public PathTransition setPath(Node a, Path p, PathTransition pt, double t){
+        pt.setNode(a);//adds the passed Node to the passed PathTransition
+        pt.setPath(p);//adds the path to the passed PathTransition
+        pt.setDuration(Duration.seconds(t));//adds the passed duration(this case (TotalDistance/RandomSpeed))
+        pt.setAutoReverse(false);//Only one lap
+        pt.setCycleCount(1);//Only one lap
+        return pt;//returns the set Path back to the given ArrayList in buildTranistions method:)
+    }
+    
+    public int checkDuration(ArrayList<PathTransition> p){//checks to see if the current duration matches the timer
         boolean b = false;
         for(int n = 0; n < p.size(); n++){
             String i = ""; 
             i+=(p.get(n).getDuration());
             int j = Integer.parseInt(i.substring(0,i.indexOf(".")));
-            j/=1000;
+            j/=1000;//Converts Duration to an integer number of seconds
             if(j == sec){
-                endOfRace = true;
+                endOfRace = true;//if it does the the winner will be caught in buildTransitions method
                 return n;
             }
         }
         return -1;
     }
     
-    public void playTransitions(){                                                  //Called this method
+    public void playTransitions(){                                                  
         for(int i = 0; i < p.size(); i++){
-            Timeline t1 = new Timeline();
-            ParallelTransition a = new ParallelTransition();
-            pa.add(setParallelTransition(a,p.get(i),np.get(i),t1));
+            Timeline t1 = new Timeline();//builds new Timeline object
+            ParallelTransition a = new ParallelTransition();//builds new ParallelTransition
+            pa.add(setParallelTransition(a,p.get(i),np.get(i),t1));//Adds new ParallelTransition to ArrayList using setParallelTransition method below
         }
         for(int i = 0; i < pa.size(); i++){
-            pa.get(i).playFromStart();
+            pa.get(i).playFromStart();//plays each ParallelTransition from start
         }
     }
     
     public ParallelTransition setParallelTransition(ParallelTransition a, PathTransition p, PathTransition np, Timeline t){
-        a.getChildren().add(p);
-        a.getChildren().add(np);
-        a.getChildren().add(t);
-        return a;
+        a.getChildren().add(p);//adds the cars PathTransition to the passed ParallelTransition
+        a.getChildren().add(np);//adds the car name PathTransition to the passed ParallelTransition 
+        a.getChildren().add(t);//adds a new Timeline object to each ParallelTransition
+        return a;//returns the set ParallelTransition
     }
-    
-    public PathTransition setPath(Node a, Path p, PathTransition pt, double t){
-        pt.setNode(a);
-        pt.setPath(p);
-        pt.setDuration(Duration.seconds(t));
-        pt.setAutoReverse(false);
-        pt.setCycleCount(1);
-        return pt;
-    }
-    
     //Accessors for new ArrayLists
-    public ArrayList<Rectangle> getCarAnim(){                                       //Calls this method
+    public ArrayList<Rectangle> getCarAnim(){                                       
         return carAnim;
     }
     
-    public ArrayList<Text> getCarNames(){                                           //Call this method
+    public ArrayList<Text> getCarNames(){                                           
         return n_t;
     }
 
