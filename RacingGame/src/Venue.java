@@ -5,17 +5,21 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import javafx.scene.Node;
+import javafx.scene.shape.Circle;
 
 
 /**
- *Ana Gorohovschi
+ * Changed by Ana Gorohovschi
  * Venue class loads data from file
- * 
- * 
+ * Computes total track length
+ * Provides a list of visual representation of the Stops
  */
 public class Venue {
     private final ArrayList<Car> cars;
     private final ArrayList<Stop> stops;
+    
+    private double distance = 0.0f;
     
     public Venue(){
         cars = new ArrayList<Car>();
@@ -78,20 +82,23 @@ public class Venue {
             System.out.println(e.getMessage());
         }        
         
-    }
-   
-    public void testLoading()
-    {
-        load("inputFile.txt");
+        for(int i=0; i<stops.size() - 1; i++)
+        {
+            distance += dist(stops.get(i), stops.get(i+1));
+        }
+        
+        distance += dist(stops.get(0), stops.get(stops.size()-1));
     }
     
-    public double distanceT(Car c){//Joe to calculate total distance of the track:)
-        double distance = 0;
-        int next = 1;
-        for(int i = 0; i < stops.size()-1; i++){
-            distance += c.calcStop(stops.get(i), stops.get(next));
-            next++;
-        }
+    private double dist(Stop a, Stop b)
+    {
+        double distanceX = (a.getX() - b.getX());
+        double distanceY = (a.getY() - b.getY());
+        return Math.sqrt((distanceX*distanceX)+(distanceY*distanceY));
+    }
+    
+    public double trackLength(){//Joe to calculate total distance of the track:)
+                              //total track length is independent of any given car
         return distance;
     }
     
@@ -101,5 +108,17 @@ public class Venue {
     
     public ArrayList<Stop> getStops(){
         return stops;
+    }
+
+    public ArrayList<Circle> stopsView()
+    {
+        ArrayList<Circle> retValue = new ArrayList<Circle>();
+
+        for(Stop s : stops)
+        {
+            retValue.add(s.getStopView());
+        }
+
+        return retValue;
     }
 }

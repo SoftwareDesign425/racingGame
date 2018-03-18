@@ -1,9 +1,18 @@
+
+import javafx.scene.Node;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+
 /* Michael Swann
  * This class contains data for each individial race stop.
  * Integers X and Y store coordinate data, which is used by other classes to calculate location and distance information.
  * The name of the stop is stored in a String.
  */
 //package AnimationPractice;
+
+/* Changed by Ana Gorohovschi
+* Stops now provide a visual representation of themselves.
+*/
 
 public class Stop{
   
@@ -41,4 +50,17 @@ public class Stop{
   {
       return name + ": " + x + ", " + y;
   }
+
+    public Circle getStopView()
+    {
+        Circle c = new Circle();
+        
+        c.setFill(Color.BLUE.brighter());
+        c.setCenterX(x);
+        c.setCenterY(y);
+        
+        c.setRadius(15.0f); 
+        
+        return c;
+    }
 }

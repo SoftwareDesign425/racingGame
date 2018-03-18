@@ -48,6 +48,7 @@ setParallelTransition(ParalellTransition a, PathTransition p, PathTransition np,
 setPath(Node a, Path p, PathTransition pt, double t) [PathTransition p] - sets the Path of a given PathTransition when passed any Node, Path, and double(duration)
 */
 
+import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Timer;
@@ -58,6 +59,7 @@ import javafx.animation.PathTransition;
 import javafx.animation.Timeline;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
@@ -65,8 +67,18 @@ import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
+
+/*
+* Changed by Ana Gorohovschi
+* Removed the construction of the Venue object.
+* That comes from the GUICore
+* Total distance of the track is independent of any given car
+* Changed the visual styles of the tracks and Stop's names
+*/
 
 public class Animation {
     private ArrayList<Rectangle> carAnim;//Only sixteen attributes:)
@@ -88,7 +100,7 @@ public class Animation {
         }
     };
     
-    public Animation(){
+    public Animation(Venue v){
         carAnim = new ArrayList<Rectangle>();
         carPaths = new ArrayList<Path>();
         namePaths = new ArrayList<Path>();
@@ -97,7 +109,7 @@ public class Animation {
         pa = new ArrayList<ParallelTransition>();
         t = new ArrayList<Text>();
         n_t = new ArrayList<Text>();
-        v = new Venue();
+        this.v = v;
         endOfRace = false;
         pOrder1 = "";
         time = new Timer(true);
@@ -108,9 +120,16 @@ public class Animation {
     public ArrayList<Text> init_StopNames(){           
         ArrayList<Stop> stops = v.getStops();
         
+        Text txt = null;
+        
         for(int i = 0; i < stops.size(); i++){
-            t.add(new Text(stops.get(i).getName())); //Creates a new Text object with for each stop name
-            t.get(i).relocate(stops.get(i).getX(), stops.get(i).getY());//Relocates them to there stop coordinates
+            txt = new Text(stops.get(i).getName());
+            txt.setTextAlignment(TextAlignment.CENTER);
+            txt.setX(stops.get(i).getX() - txt.getLayoutBounds().getWidth()/2);
+            txt.setY(stops.get(i).getY());
+            txt.setTextOrigin(VPos.BOTTOM);
+            
+            t.add(txt); //Creates a new Text object with for each stop name
         }
         
         return t;//returns ArrayList to the Pane in GUICore
@@ -120,11 +139,18 @@ public class Animation {
         ArrayList<Stop> stops = v.getStops();
         ArrayList<Line> line = new ArrayList<Line>();
         for(int i = 0; i < stops.size(); i++){//This will show the track as a line for the mapping out of where to build the track
+            Line newLine = null;
             if(i != stops.size()-1){
-                line.add(new Line(stops.get(i).getX(), stops.get(i).getY(), stops.get(i+1).getX(), stops.get(i+1).getY()));
+                newLine = new Line(stops.get(i).getX(), stops.get(i).getY(), stops.get(i+1).getX(), stops.get(i+1).getY());
             }else{
-                line.add(new Line(stops.get(0).getX(), stops.get(0).getY(), stops.get(i).getX(), stops.get(i).getY()));
+                newLine = new Line(stops.get(0).getX(), stops.get(0).getY(), stops.get(i).getX(), stops.get(i).getY());
             }
+            
+            newLine.setStrokeWidth(25);
+            newLine.setStroke(Color.rgb(125, 125, 125));
+            newLine.setStrokeLineCap(StrokeLineCap.ROUND);            
+            
+            line.add(newLine);
         }
         return line;
     }
@@ -187,8 +213,8 @@ public class Animation {
         for(int i = 0; i < carPaths.size(); i++){//Builds the pathTransition for each carPath and namePath
             PathTransition pathC = new PathTransition();//new car PathTransition
             PathTransition pathN = new PathTransition();//new name PathTransition
-            p.add(setPath(carAnim.get(i),carPaths.get(i),pathC,v.distanceT(cars.get(i))/cars.get(i).getSpeed()));//Takes the car,carPath,car PathTransition,Adding speed:)[passes to setPath method]
-            np.add(setPath(n_t.get(i),namePaths.get(i),pathN,v.distanceT(cars.get(i))/cars.get(i).getSpeed()));//Takes the car name,carNamePath,car name PathTransition,Adding speed:)[passes to setPath method]
+            p.add(setPath(carAnim.get(i),carPaths.get(i),pathC,v.trackLength()/cars.get(i).getSpeed()));//Takes the car,carPath,car PathTransition,Adding speed:)[passes to setPath method]
+            np.add(setPath(n_t.get(i),namePaths.get(i),pathN,v.trackLength()/cars.get(i).getSpeed()));//Takes the car name,carNamePath,car name PathTransition,Adding speed:)[passes to setPath method]
             p.get(i).statusProperty().addListener(new ChangeListener<Status>() {//will determine if the animations are still running, using ChangeListener, Status, and ObservableValue classes
                 @Override
                 public void changed(ObservableValue<? extends Status> observableValue,
@@ -244,6 +270,25 @@ public class Animation {
         a.getChildren().add(t);//adds a new Timeline object to each ParallelTransition
         return a;//returns the set ParallelTransition
     }
+    
+    //Accessor for ParallelTransition array
+    public ArrayList<ParallelTransition> getPA(){
+      return pa;
+    }
+    
+    //Special Accessor for status
+    public Status getStatus(){
+      for(ParallelTransition i : pa){
+        if(i.getStatus() == Status.RUNNING){ // If ANY are running, this is applicable
+          return Status.RUNNING;
+        }
+        if(i.getStatus() == Status.PAUSED){ // If ANY are paused, they all must be
+          return Status.PAUSED;
+        }
+      }
+      return Status.STOPPED; // If none are running or paused, all must be stopped
+    }
+    
     //Accessors for new ArrayLists
     public ArrayList<Rectangle> getCarAnim(){                                       
         return carAnim;
@@ -251,9 +296,5 @@ public class Animation {
     
     public ArrayList<Text> getCarNames(){                                           
         return n_t;
-    }
-
-    public Venue getVenue(){
-        return v;
     }
 }

@@ -25,7 +25,13 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 // Class Compatibility/ Misc.
+import javafx.animation.ParallelTransition;
 import javafx.animation.Animation.Status;
+
+/* Changed by Ana Gorohovschi
+* There should be only one Venue object
+* Added drawing of the Stops
+*/
 
 public class GUICore extends Application{
   
@@ -40,7 +46,6 @@ public class GUICore extends Application{
   public GUICore(){
       isWin = false; isAin = false; //True if colliding, False if not colliding
       isSin = false; isDin = false;
-      a = new Animation();
       winner = false;
   }  
   
@@ -50,10 +55,10 @@ public class GUICore extends Application{
 //******************* Set-Up *******************//
     
     // Main body
-    inputString = "../inputFile.txt"; // Initialize this String
+    inputString = "inputFile.txt"; // Initialize this String
     Venue coreVenue = new Venue();
     coreVenue.load(inputString);
-    Animation coreAnim = new Animation();
+    a = new Animation(coreVenue);
     Pane corePane = new Pane();
     corePane.setPrefSize(650,500); // Allotting a 150x500 space for our menu
     
@@ -80,24 +85,19 @@ public class GUICore extends Application{
     Button resetButton = new Button("Pause Race");
     resetButton.setOnMouseClicked((new EventHandler<MouseEvent>() {
       public void handle(MouseEvent event){
-//        if(a.getPT1().getStatus().toString().equals("PAUSED") || a.getPT2().getStatus().toString().equals("PAUSED") || a.getPT3().getStatus().toString().equals("PAUSED")){ // If any are paused, unpause
-//          resetButton.setText("Pause Race");
-//          if(!a.getPT1().getStatus().toString().equals("STOPPED")){ // Don't attempt to play animation if it's already finished
-//            a.getPT1().play();
-//          }
-//          if(!a.getPT2().getStatus().toString().equals("STOPPED")){
-//            a.getPT2().play();
-//          }
-//          if(!a.getPT3().getStatus().toString().equals("STOPPED")){
-//            a.getPT3().play();
-//          }
-//        }
-//        else{ // If none are paused, pause
-//          resetButton.setText("Play Race");
-//          a.getPT1().pause();
-//          a.getPT2().pause();
-//          a.getPT3().pause();
-//        }
+        System.out.println(a.getStatus());
+        if(a.getStatus().equals(Status.RUNNING)){
+          resetButton.setText("Play Race");
+          for(ParallelTransition i : a.getPA()){
+            i.pause();
+          }
+        }
+        if(a.getStatus().equals(Status.PAUSED)){
+          resetButton.setText("Pause Race");
+          for(ParallelTransition i : a.getPA()){
+            i.play();
+          }
+        }
       }
     }));
     resetButton.relocate(525, 55);
@@ -142,19 +142,18 @@ public class GUICore extends Application{
     stage.show();
     
 //******************* JOE STUFF BELOW THIS LINE *******************// 
-    
-        a.getVenue().testLoading();
-        
         a.init_Cars();
         a.buildPaths();
         a.buildTransitions();
         a.playTransitions();
-        
+
         animPane.getChildren().addAll(a.buildRoad());
+        
+        animPane.getChildren().addAll(coreVenue.stopsView());
+        
         animPane.getChildren().addAll(a.init_StopNames());
         animPane.getChildren().addAll(a.getCarAnim());
         animPane.getChildren().addAll(a.getCarNames());
-        
         
         a.playTransitions();
         
