@@ -60,6 +60,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
@@ -106,11 +107,26 @@ public class Animation {
     
     public ArrayList<Text> init_StopNames(){           
         ArrayList<Stop> stops = v.getStops();
+        
         for(int i = 0; i < stops.size(); i++){
             t.add(new Text(stops.get(i).getName())); //Creates a new Text object with for each stop name
             t.get(i).relocate(stops.get(i).getX(), stops.get(i).getY());//Relocates them to there stop coordinates
         }
+        
         return t;//returns ArrayList to the Pane in GUICore
+    }
+    
+    public ArrayList<Line> buildRoad(){//Builds a visible road to see the paths of the cars easier
+        ArrayList<Stop> stops = v.getStops();
+        ArrayList<Line> line = new ArrayList<Line>();
+        for(int i = 0; i < stops.size(); i++){//This will show the track as a line for the mapping out of where to build the track
+            if(i != stops.size()-1){
+                line.add(new Line(stops.get(i).getX(), stops.get(i).getY(), stops.get(i+1).getX(), stops.get(i+1).getY()));
+            }else{
+                line.add(new Line(stops.get(0).getX(), stops.get(0).getY(), stops.get(i).getX(), stops.get(i).getY()));
+            }
+        }
+        return line;
     }
     
     public ArrayList<Text> init_Cars(){   
