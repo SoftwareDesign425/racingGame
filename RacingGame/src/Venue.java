@@ -45,6 +45,8 @@ public class Venue {
                         int y = Integer.parseInt(location[1].trim());
                         
                         String name = buffereReader.readLine();
+                        
+                        name = name.substring("Name:".length()).trim();
 
                         Stop s = new Stop(name, x, y);
                         
