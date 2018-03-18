@@ -41,7 +41,7 @@ animation() [none] - initializes all private attributes of class Animation
 captureAllValues() [void] - initializes all values from the inputFile.txt
 init_StopNames() [ArrayList<Text>] - initializes all stop names into ArrayList of Text objects and returns to main GUICore class's animPane
 init_Cars() [ArrayList<Text>] - initializes all car names into ArrayList of Text objects and returns to main GUICore class's animPane
-build_Cars() [void] - initializes all car's animation to have a set width and height
+                                    *Also adds random colors with to each car:)
 build_Paths() [void] - builds the paths for each car using the moveCar method
 moveCar(Path c, Path n, int c) [void] - takes two new Paths, a carPath and namePath, 
     initializes their starting location {MoveTo} and specifies path {LineTo} 
@@ -141,23 +141,15 @@ public class Animation {
     public ArrayList<Text> init_Cars(){                                           //Called this Method
         for(int i = 0; i < n.size(); i++){
             n_t.add(new Text(n.get(i)));
+            double r = Math.random();
+            double g = Math.random();
+            double b = Math.random();
+            n_t.get(i).setFill(Color.color(r, g, b));
+            Rectangle re = new Rectangle(50,50,15,15);
+            re.setFill(Color.color(r, g, b));
+            carAnim.add(re);
         }
-//        n_t.get(0).setFill(Color.BLUE);
-//        n_t.get(1).setFill(Color.RED);
-//        n_t.get(2).setFill(Color.BLUEVIOLET);
         return n_t;
-    }
-    
-    public void buildCars(){                                                       //Called this method
-        for(int i = 0; i < cars.size(); i++){
-            Rectangle r = new Rectangle(50,50,15,15);
-            r.setFill(Color.BLUE);
-//            int R = (int)(Math.random()*256);
-//            int G = (int)(Math.random()*256);
-//            int B= (int)(Math.random()*256);
-//            Color color = new Color(R, G, B); //random color, but can be bright or dull
-            carAnim.add(r);
-        }
     }
     
     public void buildPaths(){                                                      //Called this method

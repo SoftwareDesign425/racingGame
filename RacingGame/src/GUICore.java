@@ -145,11 +145,9 @@ public class GUICore extends Application{
     
         a.getVenue().testLoading();
         
-        a.captureAllValues();//Replaces all of the captures
+        a.captureAllValues();//Captures all data from inputFile.txt
         
-        //Working version
         a.init_Cars();
-        a.buildCars();
         a.buildPaths();
         a.buildTransitions();
         a.playTransitions();
