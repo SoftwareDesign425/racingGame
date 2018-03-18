@@ -95,6 +95,11 @@ public class Venue {
         return retValue;
     }
     
+    public void test()
+    {
+        
+    }
+    
     public ArrayList<Integer> getYvalues(){
         ArrayList<Integer> retValue = new ArrayList<Integer>();
         
