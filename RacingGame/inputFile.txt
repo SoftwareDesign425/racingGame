@@ -9,8 +9,8 @@ Place: 185, 450
 Name: Dallas
 Place: 350, 260
 Name: Albuquerque
-Place: 250, 250
-Name: Alaska
+Place: 200, 250
+Name: Carburator Springs
 
 /xcars:
 Name: McQueen

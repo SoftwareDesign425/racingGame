@@ -7,6 +7,12 @@
 
 import java.util.Random;
 
+/* Changed by Ana Gorohovschi
+ * The total distance of a track is independent of any given car 
+ * and it's a property of the Venue. Venue knows how many stops there are
+ * so it can and should compute the total track distance
+*/
+
 public class Car{
   
   private String name;
@@ -65,19 +71,7 @@ public class Car{
   public Stop[] getPath(){
     return path;
   }
-  
-  public double calcStop(Stop begin, Stop end){
-    int distanceX = (begin.getX() - end.getX());
-    int distanceY = (begin.getY() - end.getY());
-    double hypotenuse = Math.sqrt((distanceX*distanceX)+(distanceY*distanceY));
-    return hypotenuse;
-  }//Joe - I think there might be something wrong here. If each car starts and 
-  //ends at their same location then that would make the time always be zero.
-  //I think we need the total distance between all of the stops.
-  //I think that this could be a useful method for calculating the total distance
-  //because each car starts and stops at their starting stop:)
-  //Velocity = d/t (time will be the score for each car:))
-  
+
   @Override
   public String toString()
   {

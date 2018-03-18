@@ -27,6 +27,11 @@ import javafx.scene.control.Alert.AlertType;
 // Class Compatibility/ Misc.
 import javafx.animation.Animation.Status;
 
+/* Changed by Ana Gorohovschi
+* There should be only one Venue object
+* Added drawing of the Stops
+*/
+
 public class GUICore extends Application{
   
   private boolean isWin, isAin, isSin, isDin;
@@ -40,7 +45,6 @@ public class GUICore extends Application{
   public GUICore(){
       isWin = false; isAin = false; //True if colliding, False if not colliding
       isSin = false; isDin = false;
-      a = new Animation();
       winner = false;
   }  
   
@@ -50,10 +54,10 @@ public class GUICore extends Application{
 //******************* Set-Up *******************//
     
     // Main body
-    inputString = "../inputFile.txt"; // Initialize this String
+    inputString = "inputFile.txt"; // Initialize this String
     Venue coreVenue = new Venue();
     coreVenue.load(inputString);
-    Animation coreAnim = new Animation();
+    a = new Animation(coreVenue);
     Pane corePane = new Pane();
     corePane.setPrefSize(650,500); // Allotting a 150x500 space for our menu
     
@@ -142,19 +146,18 @@ public class GUICore extends Application{
     stage.show();
     
 //******************* JOE STUFF BELOW THIS LINE *******************// 
-    
-        a.getVenue().testLoading();
-        
         a.init_Cars();
         a.buildPaths();
         a.buildTransitions();
         a.playTransitions();
-        
+
         animPane.getChildren().addAll(a.buildRoad());
+        
+        animPane.getChildren().addAll(coreVenue.stopsView());
+        
         animPane.getChildren().addAll(a.init_StopNames());
         animPane.getChildren().addAll(a.getCarAnim());
         animPane.getChildren().addAll(a.getCarNames());
-        
         
         a.playTransitions();
         
