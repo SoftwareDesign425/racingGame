@@ -150,9 +150,9 @@ public class GUICore extends Application{
         a.buildTransitions();
         a.playTransitions();
         
-        root.getChildren().addAll(a.init_StopNames());
-        root.getChildren().addAll(a.getCarAnim());
-        root.getChildren().addAll(a.getCarNames());
+        animPane.getChildren().addAll(a.init_StopNames());
+        animPane.getChildren().addAll(a.getCarAnim());
+        animPane.getChildren().addAll(a.getCarNames());
         
         
         a.playTransitions();

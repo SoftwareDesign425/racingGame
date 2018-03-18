@@ -66,10 +66,6 @@ public class Car{
     return path;
   }
   
-  public String getName(){
-      return name;
-  }
-  
   public double calcStop(Stop begin, Stop end){
     int distanceX = (begin.getX() - end.getX());
     int distanceY = (begin.getY() - end.getY());

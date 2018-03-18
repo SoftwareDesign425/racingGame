@@ -19,7 +19,6 @@ pa (ArrayList<ParallelTransition>) - holds ParallelTransitions for all cars && c
 v (Venue) - an instance of venue for file reading(game info grabbing).
 t (ArrayList<Text>) - will hold the names of stops in Text objects and send to GUICore
 n_t (ArrayList<Text>) - will hold the names of cars in Text objects and sent to GUICore
-cars (ArrayList<Car>) - will capture all cars from inputFile.txt and initialize random speed.
 endOfRace (boolean) - tests whether the game is over based on each cars PathTransition Duration with (sec below).
 sec (int) - The tracking of the total time for Duration(tested with each PathTransition)
 time (Timer) - used to create a timer.(Will be scheduled for seconds)
@@ -34,7 +33,6 @@ getVenue() [Venue] - returns the venue object to call the load method to read th
 
 Initialization Methods:
 animation() [none] - initializes all private attributes of class Animation
-captureAllValues() [void] - initializes all values from the inputFile.txt
 init_StopNames() [ArrayList<Text>] - initializes all stop names into ArrayList of Text objects and returns to main GUICore class's animPane
 init_Cars() [ArrayList<Text>] - initializes all car names into ArrayList of Text objects and returns to main GUICore class's animPane
                                     *Also adds random colors with to each car:)
@@ -69,18 +67,14 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
-
 public class Animation {
-    //New ArrayLists
     private ArrayList<Rectangle> carAnim;//Only sixteen attributes:)
     private ArrayList<Path> carPaths;
     private ArrayList<Path> namePaths;
     private ArrayList<PathTransition> p;
     private ArrayList<PathTransition> np;
     private ArrayList<ParallelTransition> pa;
-    private ArrayList<Stop> stops;
     private ArrayList<Text> t,n_t;
-    private ArrayList<Car> cars;
     private Venue v;
     private boolean endOfRace;
     private String pOrder1;
@@ -93,10 +87,8 @@ public class Animation {
         }
     };
     
-    
     public Animation(){
-        //Intialization of new ArrayLists
-        carAnim = new ArrayList<Rectangle>();//Have buildCars randomly color cars
+        carAnim = new ArrayList<Rectangle>();
         carPaths = new ArrayList<Path>();
         namePaths = new ArrayList<Path>();
         p = new ArrayList<PathTransition>();
@@ -104,8 +96,6 @@ public class Animation {
         pa = new ArrayList<ParallelTransition>();
         t = new ArrayList<Text>();
         n_t = new ArrayList<Text>();
-        cars = new ArrayList<Car>();
-        stops = new ArrayList<Stop>();
         v = new Venue();
         endOfRace = false;
         pOrder1 = "";
@@ -114,12 +104,8 @@ public class Animation {
         sec = 0;
     }
     
-    public void captureAllValues(){       
-        cars = v.getCars();
-        stops = v.getStops();//captures all car and stop data(collected from inputFile.txt)
-    }
-    
-    public ArrayList<Text> init_StopNames(){                                      
+    public ArrayList<Text> init_StopNames(){           
+        ArrayList<Stop> stops = v.getStops();
         for(int i = 0; i < stops.size(); i++){
             t.add(new Text(stops.get(i).getName())); //Creates a new Text object with for each stop name
             t.get(i).relocate(stops.get(i).getX(), stops.get(i).getY());//Relocates them to there stop coordinates
@@ -127,10 +113,11 @@ public class Animation {
         return t;//returns ArrayList to the Pane in GUICore
     }
     
-    public ArrayList<Text> init_Cars(){                                           
+    public ArrayList<Text> init_Cars(){   
+        ArrayList<Car> cars = v.getCars();
         for(int i = 0; i < cars.size(); i++){
-            n_t.add(new Text(cars.get(i).getName()));//Adds each car name to a text object
-            double r = Math.random();
+            n_t.add(new Text(cars.get(i).toString()));//Adds each car name to a text object
+            double r = Math.random();//Red value as a value passed to Co
             double g = Math.random();
             double b = Math.random();
             n_t.get(i).setFill(Color.color(r, g, b));//Fills text object with a random color
@@ -143,6 +130,7 @@ public class Animation {
     
     public void buildPaths(){                                                      
         int counter = 1;
+        ArrayList<Car> cars = v.getCars();
         for(int i = 0; i < cars.size(); i++){
             Path p = new Path();//creates new path for the car
             Path n = new Path();//creates new path for the name of the car
@@ -153,6 +141,7 @@ public class Animation {
     
     public void moveCar(Path cp, Path np, int counter){
         Random rand = new Random();
+        ArrayList<Stop> stops = v.getStops();
         int choice = rand.nextInt(stops.size());//random integer from 0 to stop size - 1
         cp.getElements().add(new MoveTo(stops.get(choice).getX(), stops.get(choice).getY()));
         np.getElements().add(new MoveTo(stops.get(choice).getX(), stops.get(choice).getY()- (15*counter)));//Places each car at their initial starting point
@@ -177,7 +166,8 @@ public class Animation {
         namePaths.add(np);//adds the namePaths to ArrayList
     }
     
-    public void buildTransitions(){                   
+    public void buildTransitions(){          
+        ArrayList<Car> cars = v.getCars();
         for(int i = 0; i < carPaths.size(); i++){//Builds the pathTransition for each carPath and namePath
             PathTransition pathC = new PathTransition();//new car PathTransition
             PathTransition pathN = new PathTransition();//new name PathTransition
@@ -190,7 +180,7 @@ public class Animation {
                     if(newValue==Status.RUNNING){
                     }else{
                         if(!endOfRace)
-                          if(checkDuration(p)>=0){System.out.println("The winner is: " + cars.get(checkDuration(p)).getName() );};//This is the winner:)(index of checkDuration(p))
+                          if(checkDuration(p)>=0){System.out.println("The winner is: " + cars.get(checkDuration(p)).toString() );};//This is the winner:)(index of checkDuration(p))
                     }
                 }
             });

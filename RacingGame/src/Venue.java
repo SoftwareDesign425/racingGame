@@ -49,7 +49,6 @@ public class Venue {
                         name = name.substring("Name:".length()).trim();
 
                         Stop s = new Stop(name, x, y);
-                        
                         stops.add(s);
                     }
                 }
@@ -64,7 +63,7 @@ public class Venue {
                         String name = line.substring("Name:".length());
                         Car c = new Car(name);
                         
-                        cars.add(c);
+                        cars.add(c);    
                     }
                 }
             }
@@ -86,42 +85,6 @@ public class Venue {
         load("inputFile.txt");
     }
     
-    public ArrayList<Integer> getXvalues(){
-        ArrayList<Integer> retValue = new ArrayList<Integer>();
-        
-        for(Stop s : stops)
-            retValue.add(s.getX());
-                
-        return retValue;
-    }
-    
-    public ArrayList<Integer> getYvalues(){
-        ArrayList<Integer> retValue = new ArrayList<Integer>();
-        
-        for(Stop s : stops)
-            retValue.add(s.getY());
-                
-        return retValue;
-    }
-    
-    public ArrayList<String> getStopNames(){
-        ArrayList<String> retValue = new ArrayList<String>();
-        
-        for(Stop s : stops)
-            retValue.add(s.getName());
-        
-        return retValue;
-    }
-    
-    public ArrayList<String> getCarNames(){
-        ArrayList<String> retValue = new ArrayList<String>();
-        
-        for(Car c : cars)
-            retValue.add(c.getName());
-        
-        return retValue;
-    }
-    
     public double distanceT(Car c){//Joe to calculate total distance of the track:)
         double distance = 0;
         int next = 1;
@@ -132,12 +95,11 @@ public class Venue {
         return distance;
     }
     
-    public ArrayList<Stop> getStops()
-    {
-        return stops;
-    }
-    
     public ArrayList<Car> getCars(){
         return cars;
+    }
+    
+    public ArrayList<Stop> getStops(){
+        return stops;
     }
 }
