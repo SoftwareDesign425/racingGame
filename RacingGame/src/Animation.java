@@ -277,16 +277,16 @@ public class Animation {
     }
     
     //Special Accessor for status
-    public String getStatus(){
+    public Status getStatus(){
       for(ParallelTransition i : pa){
-        if(i.getStatus().toString().equals("RUNNING")){ // If ANY are running, this is applicable
-          return "RUNNING";
+        if(i.getStatus() == Status.RUNNING){ // If ANY are running, this is applicable
+          return Status.RUNNING;
         }
-        if(i.getStatus().toString().equals("PAUSED")){ // If ANY are paused, they all must be
-          return "PAUSED";
+        if(i.getStatus() == Status.PAUSED){ // If ANY are paused, they all must be
+          return Status.PAUSED;
         }
       }
-      return "STOPPED"; // If none are running or paused, all must be stopped
+      return Status.STOPPED; // If none are running or paused, all must be stopped
     }
     
     //Accessors for new ArrayLists

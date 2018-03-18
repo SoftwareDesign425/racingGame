@@ -25,6 +25,7 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 // Class Compatibility/ Misc.
+import javafx.animation.ParallelTransition;
 import javafx.animation.Animation.Status;
 
 /* Changed by Ana Gorohovschi
@@ -84,24 +85,19 @@ public class GUICore extends Application{
     Button resetButton = new Button("Pause Race");
     resetButton.setOnMouseClicked((new EventHandler<MouseEvent>() {
       public void handle(MouseEvent event){
-//        if(a.getPT1().getStatus().toString().equals("PAUSED") || a.getPT2().getStatus().toString().equals("PAUSED") || a.getPT3().getStatus().toString().equals("PAUSED")){ // If any are paused, unpause
-//          resetButton.setText("Pause Race");
-//          if(!a.getPT1().getStatus().toString().equals("STOPPED")){ // Don't attempt to play animation if it's already finished
-//            a.getPT1().play();
-//          }
-//          if(!a.getPT2().getStatus().toString().equals("STOPPED")){
-//            a.getPT2().play();
-//          }
-//          if(!a.getPT3().getStatus().toString().equals("STOPPED")){
-//            a.getPT3().play();
-//          }
-//        }
-//        else{ // If none are paused, pause
-//          resetButton.setText("Play Race");
-//          a.getPT1().pause();
-//          a.getPT2().pause();
-//          a.getPT3().pause();
-//        }
+        System.out.println(a.getStatus());
+        if(a.getStatus().equals(Status.RUNNING)){
+          resetButton.setText("Play Race");
+          for(ParallelTransition i : a.getPA()){
+            i.pause();
+          }
+        }
+        if(a.getStatus().equals(Status.PAUSED)){
+          resetButton.setText("Pause Race");
+          for(ParallelTransition i : a.getPA()){
+            i.play();
+          }
+        }
       }
     }));
     resetButton.relocate(525, 55);
