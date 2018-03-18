@@ -49,7 +49,6 @@ public class Venue {
                         name = name.substring("Name:".length()).trim();
 
                         Stop s = new Stop(name, x, y);
-                        
                         stops.add(s);
                     }
                 }
@@ -64,7 +63,7 @@ public class Venue {
                         String name = line.substring("Name:".length());
                         Car c = new Car(name);
                         
-                        cars.add(c);
+                        cars.add(c);    
                     }
                 }
             }
@@ -86,6 +85,7 @@ public class Venue {
         load("inputFile.txt");
     }
     
+<<<<<<< HEAD
     public ArrayList<Integer> getXvalues(){
         ArrayList<Integer> retValue = new ArrayList<Integer>();
         
@@ -127,6 +127,8 @@ public class Venue {
         return retValue;
     }
     
+=======
+>>>>>>> 8a19e1507da139b5694374270c52d070513c1dab
     public double distanceT(Car c){//Joe to calculate total distance of the track:)
         double distance = 0;
         int next = 1;
@@ -137,12 +139,11 @@ public class Venue {
         return distance;
     }
     
-    public ArrayList<Stop> getStops()
-    {
-        return stops;
-    }
-    
     public ArrayList<Car> getCars(){
         return cars;
+    }
+    
+    public ArrayList<Stop> getStops(){
+        return stops;
     }
 }
