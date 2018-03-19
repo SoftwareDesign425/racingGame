@@ -17,6 +17,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 // Layout management
 import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 // Menu things (buttons, mouse input, etc)
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent; 
@@ -73,10 +74,9 @@ public class GUICore extends Application{
     Button startButton = new Button("Begin/Reset Race");
     startButton.setOnMouseClicked((new EventHandler<MouseEvent>() {
       public void handle(MouseEvent event){
-//        winner = false;
-//        a.getPT1().playFromStart();
-//        a.getPT2().playFromStart();
-//        a.getPT3().playFromStart();
+        for(ParallelTransition i : a.getPA()){
+          i.playFromStart();
+        }
       }
     }));
     startButton.relocate(525, 25);
@@ -95,7 +95,9 @@ public class GUICore extends Application{
         else{
           resetButton.setText("Pause Race");
           for(ParallelTransition i : a.getPA()){
-            i.play();
+            if(!i.getStatus().equals(Status.STOPPED)){
+              i.play();
+            }
           }
         }
       }
@@ -162,6 +164,17 @@ public class GUICore extends Application{
   
   // File selection
   public void fileSelection(){
+    
+    // Buttons
+    //
+    
+    // Create a new pop-up window to display this
+    final Stage fileStage = new Stage();
+    fileStage.initModality(Modality.APPLICATION_MODAL); // This window blocks access to the main window until closed
+    Pane filePane = new Pane();
+    Scene fileScene = new Scene(filePane, 300, 200);
+    fileStage.setScene(fileScene);
+    fileStage.show();
   }
   
   // Run program
