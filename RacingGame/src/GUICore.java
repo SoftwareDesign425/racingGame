@@ -92,7 +92,7 @@ public class GUICore extends Application{
             i.pause();
           }
         }
-        if(a.getStatus().equals(Status.PAUSED)){
+        else{
           resetButton.setText("Pause Race");
           for(ParallelTransition i : a.getPA()){
             i.play();
