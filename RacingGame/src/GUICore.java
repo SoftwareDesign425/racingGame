@@ -161,8 +161,7 @@ public class GUICore extends Application{
         animPane.getChildren().addAll(a.init_StopNames());
         animPane.getChildren().addAll(a.getCarAnim());
         animPane.getChildren().addAll(a.getCarNames());
-        
-        a.playTransitions();
+        animPane.getChildren().add(a.getWinner());
         
   }
   

@@ -48,7 +48,7 @@ setParallelTransition(ParalellTransition a, PathTransition p, PathTransition np,
 setPath(Node a, Path p, PathTransition pt, double t) [PathTransition p] - sets the Path of a given PathTransition when passed any Node, Path, and double(duration)
 */
 
-import java.awt.Font;
+
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Timer;
@@ -68,6 +68,7 @@ import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeLineCap;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
@@ -88,6 +89,7 @@ public class Animation {
     private ArrayList<PathTransition> np;
     private ArrayList<ParallelTransition> pa;
     private ArrayList<Text> t,n_t;
+    private Text winner;
     private Venue v;
     private boolean endOfRace;
     private String pOrder1;
@@ -109,6 +111,7 @@ public class Animation {
         pa = new ArrayList<ParallelTransition>();
         t = new ArrayList<Text>();
         n_t = new ArrayList<Text>();
+        winner = new Text();
         this.v = v;
         endOfRace = false;
         pOrder1 = "";
@@ -220,9 +223,16 @@ public class Animation {
                 public void changed(ObservableValue<? extends Status> observableValue,
                                 Status oldValue, Status newValue) {
                     if(newValue==Status.RUNNING){
+                        winner.setVisible(false);
                     }else{
+                        winner.setVisible(true);
                         if(!endOfRace)
-                          if(checkDuration(p)>=0){System.out.println("The winner is: " + cars.get(checkDuration(p)).toString() );};//This is the winner:)(index of checkDuration(p))
+                          if(checkDuration(p)>=0){System.out.println("The winner is: " + cars.get(checkDuration(p)).toString() );
+                          winner.setText(cars.get(checkDuration(p)).toString());
+                          winner.relocate(250,20);
+                          winner.setFont(Font.font("Serif", 20));
+                          winner.setVisible(true);
+                          };//This is the winner:)(index of checkDuration(p))
                     }
                 }
             });
@@ -287,6 +297,10 @@ public class Animation {
         }
       }
       return Status.STOPPED; // If none are running or paused, all must be stopped
+    }
+    
+    public Text getWinner(){
+        return winner;
     }
     
     //Accessors for new ArrayLists
