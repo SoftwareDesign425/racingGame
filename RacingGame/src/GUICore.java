@@ -5,9 +5,7 @@
  */
 
 /* TO-DO:
- * ADD BUTTONS
- * ADD PLUG FOR ANIMATION CLASS
- * ADD FILE I/O
+ * MAKE MORE INPUT FILES SO THAT IT DOESN'T MESS UP THE FILE SELECTOR
  */
 
 // Default javaFX imports
@@ -71,7 +69,6 @@ public class GUICore extends Application{
     // Alerts
     helpAlert = new Alert(AlertType.INFORMATION, "Help information will go here once created.");
     helpAlert.setHeaderText("Game Help");
-    //winAlert = new Alert(AlertType.CONFIRMATION, "The winner is " + a.getWinner().getText()); //Commented out the stuff I'm absolutely know doesn't work now
     
 //******************* Menu *******************//
     
@@ -183,25 +180,43 @@ public class GUICore extends Application{
     RadioButton button4 = new RadioButton("Arizona");
     button4.relocate(100, 70);
     
+    ToggleGroup group = new ToggleGroup();
+    button1.setToggleGroup(group);
+    button2.setToggleGroup(group);
+    button3.setToggleGroup(group);
+    button4.setToggleGroup(group);
+    
     Button selectButton = new Button("Select");
     selectButton.setOnMouseClicked((new EventHandler<MouseEvent>() {
       public void handle(MouseEvent event){
         if(button1.isSelected()){
           inputString = "inputFile.txt"; // change this later
+          corePane.getScene().getWindow().hide();
+          start(new Stage());
         }
         if(button2.isSelected()){
           inputString = "California.txt";
+          corePane.getScene().getWindow().hide();
+          start(new Stage());
         }
         if(button3.isSelected()){
           inputString = "Florida.txt";
+          corePane.getScene().getWindow().hide();
+          start(new Stage());
         }
         if(button4.isSelected()){
           inputString = "Arizona.txt";
+          corePane.getScene().getWindow().hide();     // Close the other window
+          start(new Stage());                         // Make replacement window
         }
-        selectButton.getScene().getWindow().hide(); // Close this window
-        corePane.getScene().getWindow().hide();     // Close the other window
-        start(new Stage());                         // Make replacement window
-        
+        else{ // Revert to cancel button functionality if nothing selected
+          for(ParallelTransition i : a.getPA()){
+            if(!i.getStatus().equals(Status.STOPPED)){
+              i.play(); // Un-freeze now that the window is closed but no new race is selected
+            }
+          }
+        }
+        selectButton.getScene().getWindow().hide(); // Close this window        
       }
     }));
     selectButton.relocate(100, 120);
@@ -211,7 +226,9 @@ public class GUICore extends Application{
       public void handle(MouseEvent event){
         cancelButton.getScene().getWindow().hide(); // Hide (close) the window
         for(ParallelTransition i : a.getPA()){
-          i.play(); // Un-freeze now that the window is closed but no new race is selected
+          if(!i.getStatus().equals(Status.STOPPED)){
+            i.play(); // Un-freeze now that the window is closed but no new race is selected
+          }
         }
       }
     }));
