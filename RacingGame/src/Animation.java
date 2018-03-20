@@ -223,7 +223,7 @@ public class Animation {
                 @Override
                 public void changed(ObservableValue<? extends Status> observableValue,
                                 Status oldValue, Status newValue) {
-                    if(newValue==Status.RUNNING){
+                    if(newValue==Status.RUNNING || newValue==Status.PAUSED){
                         winner.setVisible(false);
                     }else{
                         winner.setVisible(true);
