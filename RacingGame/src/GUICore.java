@@ -37,18 +37,15 @@ import javafx.animation.Animation.Status;
 
 public class GUICore extends Application{
   
-  private boolean isWin, isAin, isSin, isDin;
-  private Scene scene;
+  
   private Animation a;
   private String inputString;
   private Alert helpAlert;
   private Alert winAlert;
   private boolean winner;
-  private Pane corePane;
+  private Pane corePane, animPane;
   
   public GUICore(){
-      isWin = false; isAin = false; //True if colliding, False if not colliding
-      isSin = false; isDin = false;
       winner = false;
       inputString = "inputFile.txt"; // Initialize this String
   }  
@@ -108,12 +105,35 @@ public class GUICore extends Application{
     
     // Select File button
     Button fileButton = new Button("Select Race");
-    fileButton.setOnMouseClicked((new EventHandler<MouseEvent>() {
+    fileButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
       public void handle(MouseEvent event){
         fileSelection(); // Not implemented yet
       }
-    }));
+    });
     fileButton.relocate(525, 85);
+    
+    // New Race 
+    Button newRaceButton = new Button("New Race");
+    newRaceButton.setOnMouseClicked(new EventHandler<MouseEvent>(){
+        public void handle(MouseEvent event){
+            Venue v = new Venue();
+            a.resetRace();
+            a.init_Cars();
+            a.buildPaths();
+            a.buildTransitions();
+            a.playTransitions();
+            animPane.getChildren().clear();
+            animPane.getChildren().addAll(a.buildRoad());
+        
+            animPane.getChildren().addAll(coreVenue.stopsView());
+
+            animPane.getChildren().addAll(a.init_StopNames());
+            animPane.getChildren().addAll(a.getCarAnim());
+            animPane.getChildren().addAll(a.getCarNames());
+            animPane.getChildren().add(a.getWinner());
+        }
+    });
+    newRaceButton.relocate(525, 115);
     
     // Help button
      Button helpButton = new Button("Help");
@@ -122,15 +142,15 @@ public class GUICore extends Application{
         helpAlert.show(); // Display our help alert
       }
     }));
-    helpButton.relocate(525, 115);
+    helpButton.relocate(525, 135);
     
     // Button Grouping
-    Group buttons = new Group(startButton, resetButton, fileButton, helpButton);
+    Group buttons = new Group(startButton, resetButton, fileButton, helpButton, newRaceButton);
     corePane.getChildren().add(buttons);
     
 //******************* Animation *******************//
     
-    Pane animPane = new Pane(); // This is a 500x500 Pane
+    animPane = new Pane(); // This is a 500x500 Pane
     animPane.setLayoutX(500);
     animPane.setLayoutY(500);
     corePane.getChildren().add(animPane);
@@ -146,21 +166,23 @@ public class GUICore extends Application{
     stage.show();
     
 //******************* JOE STUFF BELOW THIS LINE *******************// 
-        a.init_Cars();
-        a.buildPaths();
-        a.buildTransitions();
-        a.playTransitions();
+    a.init_Cars();
+    a.buildPaths();
+    a.buildTransitions();
+    a.playTransitions();
 
-        animPane.getChildren().addAll(a.buildRoad());
-        
-        animPane.getChildren().addAll(coreVenue.stopsView());
-        
-        animPane.getChildren().addAll(a.init_StopNames());
-        animPane.getChildren().addAll(a.getCarAnim());
-        animPane.getChildren().addAll(a.getCarNames());
-        animPane.getChildren().add(a.getWinner());
+
+    animPane.getChildren().addAll(a.buildRoad());
+
+    animPane.getChildren().addAll(coreVenue.stopsView());
+
+    animPane.getChildren().addAll(a.init_StopNames());
+    animPane.getChildren().addAll(a.getCarAnim());
+    animPane.getChildren().addAll(a.getCarNames());
+    animPane.getChildren().add(a.getWinner());
         
   }
+  
   
   
   // File selection

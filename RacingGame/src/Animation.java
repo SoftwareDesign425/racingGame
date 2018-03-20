@@ -114,7 +114,7 @@ public class Animation {
         winner = new Text();
         this.v = v;
         endOfRace = false;
-        pOrder1 = "";
+        pOrder1 = "";//Why is this an attribute?
         time = new Timer(true);
         time.scheduleAtFixedRate(task, 1,1);
         sec = 0;
@@ -165,9 +165,10 @@ public class Animation {
             double r = Math.random();//Red value as a value passed to Co
             double g = Math.random();
             double b = Math.random();
-            n_t.get(i).setFill(Color.color(r, g, b));//Fills text object with a random color
+            Color c = Color.color(r,g,b);
+            n_t.get(i).setFill(c);//Fills text object with a random color
             Rectangle re = new Rectangle(50,50,15,15);//Creates new car
-            re.setFill(Color.color(r, g, b));//Gives new car a random color
+            re.setFill(c);//Gives new car a random color
             carAnim.add(re);
         }
         return n_t;
@@ -232,7 +233,7 @@ public class Animation {
                           winner.relocate(250,20);
                           winner.setFont(Font.font("Serif", 20));
                           winner.setVisible(true);
-                          };//This is the winner:)(index of checkDuration(p))
+                        };//This is the winner:)(index of checkDuration(p))
                     }
                 }
             });
@@ -301,6 +302,21 @@ public class Animation {
     
     public Text getWinner(){
         return winner;
+    }
+    
+    //Reset Race
+    public void resetRace(){
+        carAnim = new ArrayList<Rectangle>();
+        carPaths = new ArrayList<Path>();
+        namePaths = new ArrayList<Path>();
+        p = new ArrayList<PathTransition>();
+        np = new ArrayList<PathTransition>();
+        pa = new ArrayList<ParallelTransition>();
+        t = new ArrayList<Text>();
+        n_t = new ArrayList<Text>();
+        winner = new Text();
+        endOfRace = false;
+        sec = 0;
     }
     
     //Accessors for new ArrayLists
