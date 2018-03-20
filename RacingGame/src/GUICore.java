@@ -31,9 +31,9 @@ import javafx.animation.ParallelTransition;
 import javafx.animation.Animation.Status;
 
 /* Changed by Ana Gorohovschi
-* There should be only one Venue object
-* Added drawing of the Stops
-*/
+ * There should be only one Venue object
+ * Added drawing of the Stops
+ */
 
 public class GUICore extends Application{
   
@@ -46,13 +46,13 @@ public class GUICore extends Application{
   private Pane corePane, animPane;
   
   public GUICore(){
-      winner = false;
-      inputString = "inputFile.txt"; // Initialize this String
+    winner = false;
+    inputString = "inputFile.txt"; // Initialize this String
   }  
   
   
   public void start(Stage stage){
-
+    
 //******************* Set-Up *******************//
     
     // Main body
@@ -112,40 +112,17 @@ public class GUICore extends Application{
     });
     fileButton.relocate(525, 85);
     
-    // New Race 
-    Button newRaceButton = new Button("New Race");
-    newRaceButton.setOnMouseClicked(new EventHandler<MouseEvent>(){
-        public void handle(MouseEvent event){
-            Venue v = new Venue();
-            a.resetRace();
-            a.init_Cars();
-            a.buildPaths();
-            a.buildTransitions();
-            a.playTransitions();
-            animPane.getChildren().clear();
-            animPane.getChildren().addAll(a.buildRoad());
-        
-            animPane.getChildren().addAll(coreVenue.stopsView());
-
-            animPane.getChildren().addAll(a.init_StopNames());
-            animPane.getChildren().addAll(a.getCarAnim());
-            animPane.getChildren().addAll(a.getCarNames());
-            animPane.getChildren().add(a.getWinner());
-        }
-    });
-    newRaceButton.relocate(525, 115);
-    
     // Help button
-     Button helpButton = new Button("Help");
+    Button helpButton = new Button("Help");
     helpButton.setOnMouseClicked((new EventHandler<MouseEvent>() {
       public void handle(MouseEvent event){
         helpAlert.show(); // Display our help alert
       }
     }));
-    helpButton.relocate(525, 135);
+    helpButton.relocate(525, 115);
     
     // Button Grouping
-    Group buttons = new Group(startButton, resetButton, fileButton, helpButton, newRaceButton);
+    Group buttons = new Group(startButton, resetButton, fileButton, helpButton);
     corePane.getChildren().add(buttons);
     
 //******************* Animation *******************//
@@ -165,22 +142,23 @@ public class GUICore extends Application{
     stage.sizeToScene();
     stage.show();
     
-//******************* JOE STUFF BELOW THIS LINE *******************// 
+//******************* Animation Finalization *******************//
+    
     a.init_Cars();
     a.buildPaths();
     a.buildTransitions();
     a.playTransitions();
-
-
+    
+    
     animPane.getChildren().addAll(a.buildRoad());
-
+    
     animPane.getChildren().addAll(coreVenue.stopsView());
-
+    
     animPane.getChildren().addAll(a.init_StopNames());
     animPane.getChildren().addAll(a.getCarAnim());
     animPane.getChildren().addAll(a.getCarNames());
     animPane.getChildren().add(a.getWinner());
-        
+    
   }
   
   
@@ -260,7 +238,7 @@ public class GUICore extends Application{
     final Stage fileStage = new Stage();
     fileStage.initModality(Modality.APPLICATION_MODAL); // This window blocks access to the main window until closed
     Pane filePane = new Pane();
-    filePane.getChildren().addAll(button1, button2, button3, button4, selectButton, cancelButton);
+    filePane.getChildren().addAll(button1, button2, button3, button4,  selectButton, cancelButton);
     Scene fileScene = new Scene(filePane, 300, 200);
     fileStage.setScene(fileScene);
     fileStage.setResizable(false);
