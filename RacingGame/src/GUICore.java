@@ -64,7 +64,10 @@ public class GUICore extends Application{
     corePane.setPrefSize(650,500); // Allotting a 150x500 space for our menu
     
     // Alerts
-    helpAlert = new Alert(AlertType.INFORMATION, "Help information will go here once created.");
+    helpAlert = new Alert(AlertType.INFORMATION, 
+            "Begin/Restart Race - restarts the current race\n\n"
+                    + "Play/Pause Race - plays or pauses the current race\n\n"
+                    + "Select Race - chooses a new map with new cars and speeds\n\n");
     helpAlert.setHeaderText("Game Help");
     
 //******************* Menu *******************//
