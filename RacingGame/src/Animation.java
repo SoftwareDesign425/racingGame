@@ -229,7 +229,7 @@ public class Animation {
                         winner.setVisible(true);
                         if(!endOfRace)
                           if(checkDuration(p)>=0){System.out.println("The winner is: " + cars.get(checkDuration(p)).toString() );
-                          winner.setText(cars.get(checkDuration(p)).toString());
+                          winner.setText(cars.get(checkDuration(p)).toString() + " Wins!");
                           winner.relocate(250,20);
                           winner.setFont(Font.font("Serif", 20));
                           winner.setVisible(true);
