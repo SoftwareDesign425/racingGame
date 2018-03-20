@@ -116,7 +116,7 @@ public class Animation {
         endOfRace = false;
         pOrder1 = "";
         time = new Timer(true);
-        time.scheduleAtFixedRate(task, 1000,1000);
+        time.scheduleAtFixedRate(task, 1,1);
         sec = 0;
     }
     
@@ -254,8 +254,8 @@ public class Animation {
             String i = ""; 
             i+=(p.get(n).getDuration());
             int j = Integer.parseInt(i.substring(0,i.indexOf(".")));
-            j/=1000;//Converts Duration to an integer number of seconds
-            if(j == sec){
+            System.out.println("Milliseconds: " + sec);
+            if(j < sec){
                 endOfRace = true;//if it does the the winner will be caught in buildTransitions method
                 return n;
             }
