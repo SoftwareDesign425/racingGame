@@ -1,0 +1,22 @@
+/xstops:
+Place: 75, 155
+Name: Wichita
+Place: 250, 75
+Name: Topeka
+Place: 300, 160
+Name: Hutchinson
+Place: 185, 450
+Name: Dodge City
+Place: 350, 260
+Name: Derby
+Place: 200, 275
+Name: Andover
+Place: 50, 225
+Name: McPherson
+
+/xcars:
+Name: McQueen
+Name: Sally
+Name: Larry
+Name: Jerry
+Name: James

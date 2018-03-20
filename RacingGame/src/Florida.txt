@@ -1,0 +1,22 @@
+/xstops:
+Place: 400, 45
+Name: Jacksonville
+Place: 200, 70
+Name: Miami
+Place: 250, 180
+Name: Tallahassee
+Place: 185, 450
+Name: Fort Lauderdale
+Place: 380, 140
+Name: Tampa
+Place: 350, 370
+Name: Hialeah
+Place: 300, 100
+Name: St. Petersburg
+
+/xcars:
+Name: Kraig
+Name: Kelly
+Name: Fred
+Name: John
+Name: Bob

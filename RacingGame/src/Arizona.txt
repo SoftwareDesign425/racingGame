@@ -1,0 +1,22 @@
+/xstops:
+Place: 75, 125
+Name: Phoenix
+Place: 450, 320
+Name: Tucson
+Place: 250, 380
+Name: Tempe
+Place: 250, 300
+Name: Yuma
+Place: 350, 170
+Name: Mesa
+Place: 250, 70
+Name: Avondale
+Place: 75, 275
+Name: Gilbert
+
+/xcars:
+Name: Johnny
+Name: Amy
+Name: Judy
+Name: Jackson
+Name: Albert

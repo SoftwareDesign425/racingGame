@@ -1,0 +1,22 @@
+/xstops:
+Place: 60, 180
+Name: San Francisco
+Place: 420, 60
+Name: Los Angeles
+Place: 300, 160
+Name: Sacremento
+Place: 150, 400
+Name: Oakland
+Place: 350, 275
+Name: Stockton
+Place: 200, 200
+Name: Riverside
+Place: 45, 230
+Name: Modesto
+
+/xcars:
+Name: George
+Name: Rose
+Name: Gary
+Name: Fred
+Name: Sue

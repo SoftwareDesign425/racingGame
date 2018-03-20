@@ -47,7 +47,7 @@ public class GUICore extends Application{
   
   public GUICore(){
     winner = false;
-    inputString = "inputFile.txt"; // Initialize this String
+    inputString = "Kansas.txt"; // Initialize this String to our "base" venue
   }  
   
   
@@ -190,7 +190,7 @@ public class GUICore extends Application{
     selectButton.setOnMouseClicked((new EventHandler<MouseEvent>() {
       public void handle(MouseEvent event){
         if(button1.isSelected()){
-          inputString = "inputFile.txt"; // change this later
+          inputString = "Kansas.txt";
           corePane.getScene().getWindow().hide();
           start(new Stage());
         }
