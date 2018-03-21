@@ -53,7 +53,7 @@ public class GUICore extends Application{
   private Pane corePane, animPane;
   
   public GUICore(){//Joe - eliminated unnessacary attribute:)
-    inputString = "/Files/Kansas.txt"; // Initialize this String to our "base" venue
+    inputString = "Files/Kansas.txt"; // Initialize this String to our "base" venue
   }  
 
   public void start(Stage stage){
@@ -263,22 +263,22 @@ public class GUICore extends Application{
     selectButton.setOnMouseClicked((new EventHandler<MouseEvent>() {
       public void handle(MouseEvent event){
         if(button1.isSelected()){
-          inputString = "/Files/Kansas.txt";
+          inputString = "Files/Kansas.txt";
           corePane.getScene().getWindow().hide();
           start(new Stage());
         }
         if(button2.isSelected()){
-          inputString = "/Files/California.txt";
+          inputString = "Files/California.txt";
           corePane.getScene().getWindow().hide();
           start(new Stage());
         }
         if(button3.isSelected()){
-          inputString = "/Files/Florida.txt";
+          inputString = "Files/Florida.txt";
           corePane.getScene().getWindow().hide();
           start(new Stage());
         }
         if(button4.isSelected()){
-          inputString = "/Files/Arizona.txt";
+          inputString = "Files/Arizona.txt";
           corePane.getScene().getWindow().hide();     // Close the other window
           start(new Stage());                         // Make replacement window
         }
