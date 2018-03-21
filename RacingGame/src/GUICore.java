@@ -123,10 +123,19 @@ public class GUICore extends Application{
     Button keyButton = new Button("View Key");
     keyButton.setOnMouseClicked((new EventHandler<MouseEvent>() {
       public void handle(MouseEvent event){
-        showKey(); // Display our help alert
+        showKey(); // Display our key
       }
     }));
     keyButton.relocate(525, 115);
+    
+    // Scoreboard button
+    Button scoreButton = new Button("View Scoreboard");
+    scoreButton.setOnMouseClicked((new EventHandler<MouseEvent>() {
+      public void handle(MouseEvent event){
+        showScoreBoard(); // show scoreboard
+      }
+    }));
+    scoreButton.relocate(525, 145);
     
     // Help button
     Button helpButton = new Button("Help");
@@ -135,10 +144,10 @@ public class GUICore extends Application{
         helpAlert.show(); // Display our help alert
       }
     }));
-    helpButton.relocate(525, 145);
+    helpButton.relocate(525, 175);
     
     // Button Grouping
-    Group buttons = new Group(startButton, resetButton, fileButton, helpButton, keyButton);
+    Group buttons = new Group(startButton, resetButton, fileButton, helpButton, keyButton, scoreButton);
     corePane.getChildren().add(buttons);
     
 //******************* Animation *******************//
