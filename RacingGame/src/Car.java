@@ -23,7 +23,8 @@ public class Car{
   {
       name = n;
       Random rand = new Random();
-      topSpeed = 100.0 + (200.0-100.0)*rand.nextDouble();
+      topSpeed = 100.0 + (200.0-100.0)*rand.nextDouble();//creates random speed from 200-100 
+      //(distance will be divided by this to create a random time for the duration of animation)
   }
 
   public double getSpeed(){
