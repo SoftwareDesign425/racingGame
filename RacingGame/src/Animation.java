@@ -186,7 +186,7 @@ public class Animation {
             Path n = new Path();//creates new path for the name of the car
             int startStop = moveCar(p, n, counter);//adds the path to each car
             cars.get(i).setStartStop(startStop);
-            counter++;//loops through giving each car a path
+            //counter++;//loops through giving each car a path
         }
     }
     

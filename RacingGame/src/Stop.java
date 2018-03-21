@@ -52,7 +52,8 @@ public class Stop{
     {
         Circle c = new Circle();
         
-        c.setFill(Color.BLUE.brighter());
+        c.setStroke(Color.BLUE.brighter());
+        c.setFill(Color.TRANSPARENT);
         c.setCenterX(x);
         c.setCenterY(y);
         

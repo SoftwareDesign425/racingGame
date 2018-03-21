@@ -72,7 +72,8 @@ public class GUICore extends Application{
             "Begin/Restart Race - restarts the current race\n\n"
                     + "Play/Pause Race - plays or pauses the current race\n\n"
                     + "Select Race - chooses a new map with new cars and speeds\n\n"
-                    + "View Key - views each driver in their corresponding car color\n\n");
+                    + "View Key - views each driver in their corresponding car color\n\n"
+                    + "View Scoreboard - views the scoreboard");
     helpAlert.setHeaderText("Game Help");
     
 //******************* Menu *******************//
