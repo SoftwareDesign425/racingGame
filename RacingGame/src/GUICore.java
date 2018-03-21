@@ -29,6 +29,11 @@ import javafx.scene.control.ToggleGroup;
 // Class Compatibility/ Misc.
 import javafx.animation.ParallelTransition;
 import javafx.animation.Animation.Status;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.layout.GridPane;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 
 /* Changed by Ana Gorohovschi
  * There should be only one Venue object
@@ -49,8 +54,7 @@ public class GUICore extends Application{
     winner = false;
     inputString = "Kansas.txt"; // Initialize this String to our "base" venue
   }  
-  
-  
+
   public void start(Stage stage){
     
 //******************* Set-Up *******************//
@@ -162,9 +166,66 @@ public class GUICore extends Application{
     animPane.getChildren().addAll(a.getCarNames());
     animPane.getChildren().add(a.getWinner());
     
+    animPane.addEventHandler(GameOverEvent.gameOver, event -> showScoreBoard());
   }
   
-  
+  //Ana Gorohovschi
+  //Display the scoreboard in a pop-up window
+  private void showScoreBoard()
+  {
+    final Stage scoreBoardStage = new Stage();
+    GridPane scoreBoard = new GridPane();
+    
+    scoreBoard.setPadding(new Insets(10, 10, 10, 10)); 
+
+    scoreBoard.setVgap(5); 
+    scoreBoard.setHgap(5);       
+
+    scoreBoard.setAlignment(Pos.CENTER);
+    
+    Venue v = a.getVenue();
+    
+    double trackLength = v.trackLength();
+    
+    scoreBoard.add(new Text("Car:"), 0, 0);
+    scoreBoard.add(new Text("Path:"), 1, 0);
+    scoreBoard.add(new Text("Speed (mph):"), 2, 0);
+    scoreBoard.add(new Text("Total time (s):"), 3, 0);
+    
+    int i=1;
+    for(Car c : v.getCars())
+    {
+        scoreBoard.add(new Text(c.getName()), 0, i);
+        TextFlow path = new TextFlow();
+        path.setLineSpacing(5.0);
+
+        for(int j=c.getEndStop(), k=0; k<v.getStops().size(); k++, j++)
+        {
+            if(j == v.getStops().size())
+                j = 0;
+            
+            Text stopName = new Text(v.getStops().get(j).getName() + ", ");
+            path.getChildren().add(stopName);
+        }
+        
+        scoreBoard.add(path, 1, i);
+        
+        scoreBoard.add(new Text(
+                String.format("%.2f", c.getSpeed()) + " mph"), 
+                2, i);
+        
+        double time = trackLength * (200 - c.getSpeed());
+        time /= 60;
+        
+        scoreBoard.add(new Text(String.format("%.2f", time) + " s"), 3, i);
+        
+        i++;
+    }
+    
+    Scene scoreBoardScene = new Scene(scoreBoard);
+    scoreBoardStage.setScene(scoreBoardScene);
+    scoreBoardStage.show();      
+  }
   
   // File selection
   public void fileSelection(){

@@ -17,59 +17,32 @@ public class Car{
   
   private String name;
   private double topSpeed;
-  private double time;
-  private Stop[] path;
-  private int minX, maxX, minY, maxY;
-  
-  //Constructor that takes the min and max dimensions of each car
-  //Joe for Animation <Only for the User's Car>
-  public Car(int minX, int maxX, int minY, int maxY){
-      this.minX = minX;
-      this.minY = minY;
-      this.maxX = maxX;
-      this.maxY = maxY;
-  }
-  //This will be the main method that will decide collsion
-  //(Whether or not the car is touching the other object)
-  //Joe for Animation collision detection:)
-  public boolean isTouching(Car other){//Passes the GameObject param
-      return maxX >= other.minX && minX <= other.maxX 
-              && maxY >= other.minY && minY <= other.maxY;
-  }
-  
+  private int startEndIndex; // the index of the starting stop
+
   public Car(String n)//Joe Edited so that we can read speed from txt file
   {
       name = n;
       Random rand = new Random();
       topSpeed = 100.0 + (200.0-100.0)*rand.nextDouble();
-      //randomize the other fields
   }
-  
-  public Car(double newSpeed, Stop[] newPath){
-    topSpeed = newSpeed;
-    time = 0.0;
-    path = newPath;
-  }
-  
-  public void setTime(double newTime){
-    time = newTime;
-  }
-  public void setPath(Stop[] newPath){
-    path = newPath;
-  }
-  public void setSpeed(double newSpeed){
-    topSpeed = newSpeed;
-  }
+
   public double getSpeed(){
     return topSpeed;
   }
-  public double getTime(){
-    return time;
+  
+  public String getName()
+  {
+      return name;
   }
   
+  public void setStartStop(int s)
+  {
+      startEndIndex = s;
+  }
   
-  public Stop[] getPath(){
-    return path;
+  public int getEndStop()
+  {
+      return startEndIndex;
   }
 
   @Override

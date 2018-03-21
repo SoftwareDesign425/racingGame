@@ -180,12 +180,14 @@ public class Animation {
         for(int i = 0; i < cars.size(); i++){
             Path p = new Path();//creates new path for the car
             Path n = new Path();//creates new path for the name of the car
-            moveCar(p, n, counter);//adds the path to each car
+            int startStop = moveCar(p, n, counter);//adds the path to each car
+            cars.get(i).setStartStop(startStop);
             counter++;//loops through giving each car a path
         }
     }
     
-    public void moveCar(Path cp, Path np, int counter){
+    private int moveCar(Path cp, Path np, int counter){
+        int retValue = -1;
         Random rand = new Random();
         ArrayList<Stop> stops = v.getStops();
         int choice = rand.nextInt(stops.size());//random integer from 0 to stop size - 1
@@ -193,6 +195,7 @@ public class Animation {
         np.getElements().add(new MoveTo(stops.get(choice).getX(), stops.get(choice).getY()- (15*counter)));//Places each car at their initial starting point
         System.out.println("Car " + counter + " started at: " + stops.get(choice));
         int track = choice+1;//starting postition + 1
+        retValue = track;
         for(int i = 0; i < stops.size(); i++){
             if(track >= stops.size()){//if the track is out of bounds of the arrayList then reset track to zero
                 track = 0;
@@ -210,6 +213,8 @@ public class Animation {
         pOrder1 = "";//reset pOrder1 for the next race
         carPaths.add(cp);//adds the carPaths to ArrayList
         namePaths.add(np);//adds the namePaths to ArrayList
+        
+        return retValue;
     }
     
     public void buildTransitions(){          
@@ -233,6 +238,8 @@ public class Animation {
                           winner.relocate(250,20);
                           winner.setFont(Font.font("Serif", 20));
                           winner.setVisible(true);
+                          
+                          winner.fireEvent(new GameOverEvent());                          
                         };//This is the winner:)(index of checkDuration(p))
                     }
                 }
@@ -326,5 +333,10 @@ public class Animation {
     
     public ArrayList<Text> getCarNames(){                                           
         return n_t;
+    }
+    
+    public Venue getVenue()
+    {
+        return v;
     }
 }
