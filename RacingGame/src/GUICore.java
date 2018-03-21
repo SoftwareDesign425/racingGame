@@ -27,6 +27,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 
 // Class Compatibility/ Misc.
+import java.util.ArrayList;
 import javafx.animation.ParallelTransition;
 import javafx.animation.Animation.Status;
 import javafx.geometry.Insets;
@@ -44,6 +45,7 @@ public class GUICore extends Application{
   
   
   private Animation a;
+  private Venue coreVenue;
   private String inputString;
   private Alert helpAlert;
   private Alert winAlert;
@@ -51,7 +53,7 @@ public class GUICore extends Application{
   private Pane corePane, animPane;
   
   public GUICore(){//Joe - eliminated unnessacary attribute:)
-    inputString = "Kansas.txt"; // Initialize this String to our "base" venue
+    inputString = "/Files/Kansas.txt"; // Initialize this String to our "base" venue
   }  
 
   public void start(Stage stage){
@@ -59,17 +61,18 @@ public class GUICore extends Application{
 //******************* Set-Up *******************//
     
     // Main body
-    Venue coreVenue = new Venue();
+    coreVenue = new Venue();
     coreVenue.load(inputString);
     a = new Animation(coreVenue);
     corePane = new Pane();
     corePane.setPrefSize(650,500); // Allotting a 150x500 space for our menu
     
-    // Alerts
+    // Alerts    
     helpAlert = new Alert(AlertType.INFORMATION, 
             "Begin/Restart Race - restarts the current race\n\n"
                     + "Play/Pause Race - plays or pauses the current race\n\n"
-                    + "Select Race - chooses a new map with new cars and speeds\n\n");
+                    + "Select Race - chooses a new map with new cars and speeds\n\n"
+                    + "View Key - views each driver next to their corresponding car color\n\n");
     helpAlert.setHeaderText("Game Help");
     
 //******************* Menu *******************//
@@ -116,6 +119,15 @@ public class GUICore extends Application{
     });
     fileButton.relocate(525, 85);
     
+    // Key button
+    Button keyButton = new Button("View Key");
+    keyButton.setOnMouseClicked((new EventHandler<MouseEvent>() {
+      public void handle(MouseEvent event){
+        showKey(); // Display our help alert
+      }
+    }));
+    keyButton.relocate(525, 115);
+    
     // Help button
     Button helpButton = new Button("Help");
     helpButton.setOnMouseClicked((new EventHandler<MouseEvent>() {
@@ -123,10 +135,10 @@ public class GUICore extends Application{
         helpAlert.show(); // Display our help alert
       }
     }));
-    helpButton.relocate(525, 115);
+    helpButton.relocate(525, 145);
     
     // Button Grouping
-    Group buttons = new Group(startButton, resetButton, fileButton, helpButton);
+    Group buttons = new Group(startButton, resetButton, fileButton, helpButton, keyButton);
     corePane.getChildren().add(buttons);
     
 //******************* Animation *******************//
@@ -251,22 +263,22 @@ public class GUICore extends Application{
     selectButton.setOnMouseClicked((new EventHandler<MouseEvent>() {
       public void handle(MouseEvent event){
         if(button1.isSelected()){
-          inputString = "Kansas.txt";
+          inputString = "/Files/Kansas.txt";
           corePane.getScene().getWindow().hide();
           start(new Stage());
         }
         if(button2.isSelected()){
-          inputString = "California.txt";
+          inputString = "/Files/California.txt";
           corePane.getScene().getWindow().hide();
           start(new Stage());
         }
         if(button3.isSelected()){
-          inputString = "Florida.txt";
+          inputString = "/Files/Florida.txt";
           corePane.getScene().getWindow().hide();
           start(new Stage());
         }
         if(button4.isSelected()){
-          inputString = "Arizona.txt";
+          inputString = "/Files/Arizona.txt";
           corePane.getScene().getWindow().hide();     // Close the other window
           start(new Stage());                         // Make replacement window
         }
@@ -300,6 +312,44 @@ public class GUICore extends Application{
     fileStage.initModality(Modality.APPLICATION_MODAL); // This window blocks access to the main window until closed
     Pane filePane = new Pane();
     filePane.getChildren().addAll(button1, button2, button3, button4,  selectButton, cancelButton);
+    Scene fileScene = new Scene(filePane, 300, 200);
+    fileStage.setScene(fileScene);
+    fileStage.setResizable(false);
+    fileStage.show();
+  }
+  
+  // Key window
+  public void showKey(){
+    Pane filePane = new Pane();
+    
+    for(ParallelTransition i : a.getPA()){ // Freeze race while window is open
+      i.pause();
+    }
+    
+    ArrayList<Text> racers = a.getKey();
+    int x = 20;
+    for(Text i : racers){
+      i.relocate(100, x);
+      filePane.getChildren().add(i);
+      x+=15;
+    }
+    
+    Button cancelButton = new Button("Ok");
+    cancelButton.setOnMouseClicked((new EventHandler<MouseEvent>() {
+      public void handle(MouseEvent event){
+        cancelButton.getScene().getWindow().hide(); // Hide (close) the window
+        for(ParallelTransition i : a.getPA()){
+          if(!i.getStatus().equals(Status.STOPPED)){
+            i.play(); // Un-freeze now that the window is closed but no new race is selected
+          }
+        }
+      }
+    }));
+    cancelButton.relocate(100, 150);
+    
+    final Stage fileStage = new Stage();
+    fileStage.initModality(Modality.APPLICATION_MODAL); // This window blocks access to the main window until closed
+    filePane.getChildren().addAll(cancelButton);
     Scene fileScene = new Scene(filePane, 300, 200);
     fileStage.setScene(fileScene);
     fileStage.setResizable(false);

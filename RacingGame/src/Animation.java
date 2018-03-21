@@ -82,6 +82,7 @@ import javafx.util.Duration;
 */
 
 public class Animation {
+    private ArrayList<Text> key;
     private ArrayList<Rectangle> carAnim;//Only sixteen attributes:)
     private ArrayList<Path> carPaths;
     private ArrayList<Path> namePaths;
@@ -111,6 +112,7 @@ public class Animation {
         pa = new ArrayList<ParallelTransition>();
         t = new ArrayList<Text>();
         n_t = new ArrayList<Text>();
+        key = new ArrayList<Text>();
         winner = new Text();
         this.v = v;
         endOfRace = false;
@@ -162,11 +164,13 @@ public class Animation {
         ArrayList<Car> cars = v.getCars();
         for(int i = 0; i < cars.size(); i++){
             n_t.add(new Text(cars.get(i).toString()));//Adds each car name to a text object
+            key.add(new Text(cars.get(i).toString()));//Adds each car name to a text object
             double r = Math.random();//Red value as a value passed to Color object
             double g = Math.random();//Blue value as a value passed to Color object
             double b = Math.random();//
             Color c = Color.color(r,g,b);
             n_t.get(i).setFill(c);//Fills text object with a random color
+            key.get(i).setFill(c);//Fills text object with a random color
             Rectangle re = new Rectangle(50,50,15,15);//Creates new car
             re.setFill(c);//Gives new car a random color
             carAnim.add(re);
@@ -332,6 +336,10 @@ public class Animation {
     
     public ArrayList<Text> getCarNames(){                                           
         return n_t;
+    }
+    
+    public ArrayList<Text> getKey(){
+      return key;
     }
     
     public Venue getVenue()
