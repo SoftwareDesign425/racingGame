@@ -114,7 +114,7 @@ public class Animation {
         winner = new Text();
         this.v = v;
         endOfRace = false;
-        pOrder1 = "";//Why is this an attribute?
+        pOrder1 = "";
         time = new Timer(true);
         time.scheduleAtFixedRate(task, 1,1);
         sec = 0;
@@ -162,9 +162,9 @@ public class Animation {
         ArrayList<Car> cars = v.getCars();
         for(int i = 0; i < cars.size(); i++){
             n_t.add(new Text(cars.get(i).toString()));//Adds each car name to a text object
-            double r = Math.random();//Red value as a value passed to Co
-            double g = Math.random();
-            double b = Math.random();
+            double r = Math.random();//Red value as a value passed to Color object
+            double g = Math.random();//Blue value as a value passed to Color object
+            double b = Math.random();//
             Color c = Color.color(r,g,b);
             n_t.get(i).setFill(c);//Fills text object with a random color
             Rectangle re = new Rectangle(50,50,15,15);//Creates new car
@@ -191,7 +191,6 @@ public class Animation {
         int choice = rand.nextInt(stops.size());//random integer from 0 to stop size - 1
         cp.getElements().add(new MoveTo(stops.get(choice).getX(), stops.get(choice).getY()));
         np.getElements().add(new MoveTo(stops.get(choice).getX(), stops.get(choice).getY()- (15*counter)));//Places each car at their initial starting point
-        System.out.println("Car " + counter + " started at: " + stops.get(choice));
         int track = choice+1;//starting postition + 1
         for(int i = 0; i < stops.size(); i++){
             if(track >= stops.size()){//if the track is out of bounds of the arrayList then reset track to zero
@@ -224,16 +223,17 @@ public class Animation {
                 public void changed(ObservableValue<? extends Status> observableValue,
                                 Status oldValue, Status newValue) {
                     if(newValue==Status.RUNNING || newValue==Status.PAUSED){
-                        winner.setVisible(false);
+                        winner.setVisible(false);//(should) not be visible when paused and running
                     }else{
                         winner.setVisible(true);
-                        if(!endOfRace)
-                          if(checkDuration(p)>=0){System.out.println("The winner is: " + cars.get(checkDuration(p)).toString() );
-                          winner.setText(cars.get(checkDuration(p)).toString() + " Wins!");
-                          winner.relocate(250,20);
-                          winner.setFont(Font.font("Serif", 20));
-                          winner.setVisible(true);
-                        };//This is the winner:)(index of checkDuration(p))
+                        if(!endOfRace){
+                            if(checkDuration(p)>=0){//checks if the PathTransition duration is equal to the time in milliseconds.
+                                winner.setText(cars.get(checkDuration(p)).toString() + " Wins!");//If it is a text object will hold the winning cars name
+                                winner.relocate(250,20);//relocated to 250, 20 for simplicity
+                                winner.setFont(Font.font("Serif", 20));//set font to Serif style and 20
+                                winner.setVisible(true);//make visible
+                            }//This is the winner:)(index of checkDuration(p))
+                        }
                     }
                 }
             });
@@ -255,8 +255,7 @@ public class Animation {
             String i = ""; 
             i+=(p.get(n).getDuration());
             int j = Integer.parseInt(i.substring(0,i.indexOf(".")));
-            System.out.println("Milliseconds: " + sec);
-            if(j < sec){
+            if(j <= sec){//check if the seconds are greater than or equal to the car's duration(milliseconds)
                 endOfRace = true;//if it does the the winner will be caught in buildTransitions method
                 return n;
             }

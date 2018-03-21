@@ -1,6 +1,4 @@
-
-import javafx.scene.Node;
-import javafx.scene.paint.Color;
+import javafx.scene.paint.Color;//Joe Deleted unneeded import Node
 import javafx.scene.shape.Circle;
 
 /* Michael Swann
@@ -8,7 +6,6 @@ import javafx.scene.shape.Circle;
  * Integers X and Y store coordinate data, which is used by other classes to calculate location and distance information.
  * The name of the stop is stored in a String.
  */
-//package AnimationPractice;
 
 /* Changed by Ana Gorohovschi
 * Stops now provide a visual representation of themselves.

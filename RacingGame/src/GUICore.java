@@ -45,8 +45,7 @@ public class GUICore extends Application{
   private boolean winner;
   private Pane corePane, animPane;
   
-  public GUICore(){
-    winner = false;
+  public GUICore(){//Joe - eliminated unnessacary attribute:)
     inputString = "Kansas.txt"; // Initialize this String to our "base" venue
   }  
   
@@ -56,7 +55,6 @@ public class GUICore extends Application{
 //******************* Set-Up *******************//
     
     // Main body
-    System.out.println(inputString);
     Venue coreVenue = new Venue();
     coreVenue.load(inputString);
     a = new Animation(coreVenue);
@@ -87,7 +85,6 @@ public class GUICore extends Application{
     Button resetButton = new Button("Pause Race");
     resetButton.setOnMouseClicked((new EventHandler<MouseEvent>() {
       public void handle(MouseEvent event){
-        System.out.println(a.getStatus());
         if(a.getStatus().equals(Status.RUNNING)){
           resetButton.setText("Play Race");
           for(ParallelTransition i : a.getPA()){
@@ -147,20 +144,20 @@ public class GUICore extends Application{
     
 //******************* Animation Finalization *******************//
     
-    a.init_Cars();
-    a.buildPaths();
-    a.buildTransitions();
-    a.playTransitions();
+    a.init_Cars();//initializes cars color and car name color and adds them to ArrayLists that will return to animPane
+    a.buildPaths();//Builds the paths for each car
+    a.buildTransitions();//Builds the transitions for each car
+    a.playTransitions();//plays the transition for each car
     
     
-    animPane.getChildren().addAll(a.buildRoad());
+    animPane.getChildren().addAll(a.buildRoad());//builds the road(track for the animation)
     
-    animPane.getChildren().addAll(coreVenue.stopsView());
+    animPane.getChildren().addAll(coreVenue.stopsView());//Returns the stops animation for track
     
-    animPane.getChildren().addAll(a.init_StopNames());
-    animPane.getChildren().addAll(a.getCarAnim());
-    animPane.getChildren().addAll(a.getCarNames());
-    animPane.getChildren().add(a.getWinner());
+    animPane.getChildren().addAll(a.init_StopNames());//Returns the stop names to the animPane
+    animPane.getChildren().addAll(a.getCarAnim());//Returns the cars to the animPane
+    animPane.getChildren().addAll(a.getCarNames());//Returns the car names to the animPane
+    animPane.getChildren().add(a.getWinner());//Returns the winner to the screen
     
   }
   

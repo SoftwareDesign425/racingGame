@@ -21,28 +21,29 @@ public class Car{
   private Stop[] path;
   private int minX, maxX, minY, maxY;
   
+  //Joe Left in for future updates:)
   //Constructor that takes the min and max dimensions of each car
   //Joe for Animation <Only for the User's Car>
-  public Car(int minX, int maxX, int minY, int maxY){
-      this.minX = minX;
-      this.minY = minY;
-      this.maxX = maxX;
-      this.maxY = maxY;
-  }
-  //This will be the main method that will decide collsion
-  //(Whether or not the car is touching the other object)
-  //Joe for Animation collision detection:)
-  public boolean isTouching(Car other){//Passes the GameObject param
-      return maxX >= other.minX && minX <= other.maxX 
-              && maxY >= other.minY && minY <= other.maxY;
-  }
+//  public Car(int minX, int maxX, int minY, int maxY){
+//      this.minX = minX;
+//      this.minY = minY;
+//      this.maxX = maxX;
+//      this.maxY = maxY;
+//  }
+//  //This will be the main method that will decide collsion
+//  //(Whether or not the car is touching the other object)
+//  //Joe for Animation collision detection:)
+//  public boolean isTouching(Car other){//Passes the GameObject param
+//      return maxX >= other.minX && minX <= other.maxX 
+//              && maxY >= other.minY && minY <= other.maxY;
+//  }
   
   public Car(String n)//Joe Edited so that we can read speed from txt file
   {
       name = n;
       Random rand = new Random();
-      topSpeed = 100.0 + (200.0-100.0)*rand.nextDouble();
-      //randomize the other fields
+      topSpeed = 100.0 + (200.0-100.0)*rand.nextDouble();//creates random speed from 200-100 
+      //(distance will be divided by this to create a random time for the duration of animation)
   }
   
   public Car(double newSpeed, Stop[] newPath){
