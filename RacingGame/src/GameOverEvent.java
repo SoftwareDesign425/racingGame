@@ -9,7 +9,7 @@ import javafx.event.EventType;
  * from the Animation class
  */
 public class GameOverEvent extends Event {
-    public static final EventType<GameOverEvent> gameOver = new EventType(ANY);
+    public static final EventType<GameOverEvent> gameOver = new EventType<GameOverEvent>(ANY);
 
     public GameOverEvent()
     {

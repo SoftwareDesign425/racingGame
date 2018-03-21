@@ -72,7 +72,7 @@ public class GUICore extends Application{
             "Begin/Restart Race - restarts the current race\n\n"
                     + "Play/Pause Race - plays or pauses the current race\n\n"
                     + "Select Race - chooses a new map with new cars and speeds\n\n"
-                    + "View Key - views each driver next to their corresponding car color\n\n");
+                    + "View Key - views each driver in their corresponding car color\n\n");
     helpAlert.setHeaderText("Game Help");
     
 //******************* Menu *******************//
@@ -309,6 +309,7 @@ public class GUICore extends Application{
     
     // Create a new pop-up window to display this
     final Stage fileStage = new Stage();
+    fileStage.setTitle("Select a Race Venue");
     fileStage.initModality(Modality.APPLICATION_MODAL); // This window blocks access to the main window until closed
     Pane filePane = new Pane();
     filePane.getChildren().addAll(button1, button2, button3, button4,  selectButton, cancelButton);
@@ -348,6 +349,7 @@ public class GUICore extends Application{
     cancelButton.relocate(100, 150);
     
     final Stage fileStage = new Stage();
+    fileStage.setTitle("Racer Key");
     fileStage.initModality(Modality.APPLICATION_MODAL); // This window blocks access to the main window until closed
     filePane.getChildren().addAll(cancelButton);
     Scene fileScene = new Scene(filePane, 300, 200);
