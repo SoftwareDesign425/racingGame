@@ -30,9 +30,14 @@ import javafx.scene.control.ToggleGroup;
 import java.util.ArrayList;
 import javafx.animation.ParallelTransition;
 import javafx.animation.Animation.Status;
+import static javafx.application.Application.launch;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.layout.GridPane;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
@@ -48,14 +53,13 @@ public class GUICore extends Application{
   private Venue coreVenue;
   private String inputString;
   private Alert helpAlert;
-  private Alert winAlert;
-  private boolean winner;
   private Pane corePane, animPane;
   
   public GUICore(){//Joe - eliminated unnessacary attribute:)
     inputString = "Files/Kansas.txt"; // Initialize this String to our "base" venue
   }  
 
+  @Override//Joe added @Override
   public void start(Stage stage){
     
 //******************* Set-Up *******************//
@@ -81,6 +85,7 @@ public class GUICore extends Application{
     // Start button
     Button startButton = new Button("Begin/Reset Race");
     startButton.setOnMouseClicked((new EventHandler<MouseEvent>() {
+      @Override
       public void handle(MouseEvent event){
         for(ParallelTransition i : a.getPA()){
           i.playFromStart();
@@ -92,6 +97,7 @@ public class GUICore extends Application{
     // Reset button
     Button resetButton = new Button("Pause Race");
     resetButton.setOnMouseClicked((new EventHandler<MouseEvent>() {
+      @Override
       public void handle(MouseEvent event){
         if(a.getStatus().equals(Status.RUNNING)){
           resetButton.setText("Play Race");
@@ -114,6 +120,7 @@ public class GUICore extends Application{
     // Select File button
     Button fileButton = new Button("Select Race");
     fileButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+      @Override
       public void handle(MouseEvent event){
         fileSelection(); // Not implemented yet
       }
@@ -123,6 +130,7 @@ public class GUICore extends Application{
     // Key button
     Button keyButton = new Button("View Key");
     keyButton.setOnMouseClicked((new EventHandler<MouseEvent>() {
+      @Override
       public void handle(MouseEvent event){
         showKey(); // Display our key
       }
@@ -132,6 +140,7 @@ public class GUICore extends Application{
     // Scoreboard button
     Button scoreButton = new Button("View Scoreboard");
     scoreButton.setOnMouseClicked((new EventHandler<MouseEvent>() {
+      @Override
       public void handle(MouseEvent event){
         showScoreBoard(); // show scoreboard
       }
@@ -141,14 +150,30 @@ public class GUICore extends Application{
     // Help button
     Button helpButton = new Button("Help");
     helpButton.setOnMouseClicked((new EventHandler<MouseEvent>() {
+      @Override
       public void handle(MouseEvent event){
         helpAlert.show(); // Display our help alert
       }
     }));
     helpButton.relocate(525, 175);
     
+    //Joe Adding choiceBox 5/1/2018
+    ArrayList<Car> cars = coreVenue.getCars();
+    ArrayList<String> carsName = new ArrayList<String>();
+    carsName.add("All");
+    for(Car c : cars){
+        carsName.add(c.toString());
+    }
+    ChoiceBox racers = new ChoiceBox((FXCollections.observableList(carsName)));
+    racers.setValue("All");
+    racers.relocate(525, 205);//Find the 
+    
+    
+    //Listen for selection changes...(Joe 5/1)
+    racers.getSelectionModel().selectedItemProperty().addListener( (v, oldValue, newValue) -> changeSize(oldValue,newValue));
+    
     // Button Grouping
-    Group buttons = new Group(startButton, resetButton, fileButton, helpButton, keyButton, scoreButton);
+    Group buttons = new Group(startButton, resetButton, fileButton, helpButton, keyButton, scoreButton, racers);
     corePane.getChildren().add(buttons);
     
 //******************* Animation *******************//
@@ -187,6 +212,35 @@ public class GUICore extends Application{
     
     animPane.addEventHandler(GameOverEvent.gameOver, event -> showScoreBoard());
   }
+  
+  //Joe added changeSize method for the visibility of car selection 5/1
+    private void changeSize(Object oldValue, Object newValue) {
+        String old = (String)oldValue, newV = (String)newValue;
+        ArrayList<Car> c = coreVenue.getCars();
+        ArrayList<Rectangle> carAnim = a.getCarAnim();
+        if(!newV.equals("All")){
+            for(int i = 0; i < c.size(); i++){
+                Rectangle choice, oldChoice;
+                if(c.get(i).toString().equals(newV)){
+                    choice = carAnim.get(i);
+                    //change size of new car(carAnim at index i)
+                    choice.setWidth(choice.getWidth() + 15);
+                    choice.setHeight(choice.getHeight() + 15);
+                }else if(c.get(i).toString().equals(oldValue)){
+                    //reset size of chosen car
+                    oldChoice = carAnim.get(i);
+                    oldChoice.setWidth(oldChoice.getWidth() - 15);
+                    oldChoice.setHeight(oldChoice.getHeight() - 15);
+                }
+            }
+        }else{
+            //reset size of old value
+            for(Rectangle r : carAnim){
+                r.setWidth(15);
+                r.setHeight(15);
+            }
+        }
+    }
   
   //Ana Gorohovschi
   //Display the scoreboard in a pop-up window
@@ -372,5 +426,6 @@ public class GUICore extends Application{
   public static void main(String args[]){          
     launch(args);     
   }
+
   
 }
